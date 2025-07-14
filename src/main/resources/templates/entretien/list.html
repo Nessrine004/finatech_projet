@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des entretiens</title>
+</head>
+<body>
+<h2>Liste des entretiens</h2>
+
+<a href="/ajouter-entretien"> Ajouter un entretien</a>
+<br/><br/>
+
+<table border="1">
+  <thead>
+  <tr>
+    <th>Véhicule</th>
+    <th>Type</th>
+    <th>Date prévue</th>
+    <th>Date effectuée</th>
+    <th>Commentaire</th>
+    <th>Effectué par</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="e : ${entretiens}">
+    <td th:text="${e.vehicule?.marque + ' ' + e.vehicule?.modele}"></td>
+    <td th:text="${e.type}"></td>
+    <td th:text="${e.datePrevue}"></td>
+    <td th:text="${e.dateEffectuee}"></td>
+    <td th:text="${e.commentaire}"></td>
+    <td th:text="${e.effectuePar?.nom + ' ' + e.effectuePar?.prenom}"></td>
+    <td>
+      <a th:href="@{'/modifier-entretien/' + ${e.id}}"> Modifier</a>
+      <form th:action="@{'/supprimer-entretien/' + ${e.id}}" method="post" style="display:inline;">
+        <button type="submit" onclick="return confirm('Supprimer cet entretien ?')"> Supprimer</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Assurances</title>
+</head>
+<body>
+
+<h2>Liste des Assurances</h2>
+
+<!-- Message de succès -->
+<div th:if="${successMessage}" style="color: green;">
+    <p th:text="${successMessage}"></p>
+</div>
+
+<a href="/ajouter-assurance">➕ Nouvelle assurance</a>
+<br/><br/>
+
+<table border="1" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Véhicule</th>
+        <th>Compagnie</th>
+        <th>Date début</th>
+        <th>Date fin</th>
+        <th>Responsable</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="a : ${assurances}">
+        <td th:text="${a.id}"></td>
+        <td th:text="${a.vehicule.marque + ' ' + a.vehicule.modele + ' (' + a.vehicule.plaqueImmatriculation + ')'}"></td>
+        <td th:text="${a.compagnie}"></td>
+        <td th:text="${a.dateDebut}"></td>
+        <td th:text="${a.dateFin}"></td>
+        <td th:text="${a.effectuePar.nom + ' ' + a.effectuePar.prenom}"></td>
+        <td>
+            <a th:href="@{'/modifier-assurance/' + ${a.id}}">✏️ Modifier</a>
+            |
+            <form th:action="@{'/supprimer-assurance/' + ${a.id}}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Confirmer la suppression ?')">🗑 Supprimer</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

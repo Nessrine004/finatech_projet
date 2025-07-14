@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${entretien.id} == null ? 'Ajouter Entretien' : 'Modifier Entretien'">Formulaire Entretien</title>
+</head>
+<body>
+
+<h2 th:text="${entretien.id} == null ? 'Ajouter un entretien' : 'Modifier l\'entretien'"></h2>
+
+<!-- ✅ Affichage message d'erreur -->
+<div th:if="${errorMessage}" style="color: red; font-weight: bold;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<!-- ✅ Formulaire pour ajout -->
+<form th:if="${entretien.id} == null"
+      th:action="@{/ajouter-entretien}"
+      th:object="${entretien}" method="post">
+
+    <label>Véhicule :</label>
+    <select th:field="*{vehicule.id}" required>
+        <option value="">-- Sélectionner un véhicule --</option>
+        <option th:each="v : ${vehicules}"
+                th:value="${v.id}"
+                th:text="${v.marque + ' ' + v.modele + ' - ' + v.plaqueImmatriculation}">
+        </option>
+    </select><br/><br/>
+
+    <label>Effectué par (Technicien/Ingénieur) :</label>
+    <select th:field="*{effectuePar.id}" required>
+
+    <option value="">-- Sélectionner un utilisateur --</option>
+        <option th:each="u : ${utilisateurs}"
+                th:value="${u.id}"
+                th:text="${u.nom + ' ' + u.prenom}">
+        </option>
+    </select><br/><br/>
+
+    <label>Type d’entretien :</label>
+    <input type="text" th:field="*{type}" required/><br/><br/>
+
+    <label>Date prévue :</label>
+    <input type="date" th:field="*{datePrevue}" required/><br/><br/>
+
+    <label>Date effectuée :</label>
+    <input type="date" th:field="*{dateEffectuee}"/><br/><br/>
+
+    <label>Commentaire :</label><br/>
+    <textarea th:field="*{commentaire}" rows="4" cols="40"></textarea><br/><br/>
+
+    <button type="submit">Ajouter</button>
+</form>
+
+<!-- ✅ Formulaire pour modification -->
+<form th:if="${entretien.id} != null"
+      th:action="@{/modifier-entretien/{id}(id=${entretien.id})}"
+      th:object="${entretien}" method="post">
+
+    <label>Véhicule :</label>
+    <select th:field="*{vehicule.id}" required>
+        <option value="">-- Sélectionner un véhicule --</option>
+        <option th:each="v : ${vehicules}"
+                th:value="${v.id}"
+                th:text="${v.marque + ' ' + v.modele + ' - ' + v.plaqueImmatriculation}">
+        </option>
+    </select><br/><br/>
+
+    <label>Effectué par (Technicien/Ingénieur) :</label>
+    <select th:field="*{effectuePar.id}" required>
+
+    <option value="">-- Sélectionner un utilisateur --</option>
+        <option th:each="u : ${utilisateurs}"
+                th:value="${u.id}"
+                th:text="${u.nom + ' ' + u.prenom}">
+        </option>
+    </select><br/><br/>
+
+    <label>Type d’entretien :</label>
+    <input type="text" th:field="*{type}" required/><br/><br/>
+
+    <label>Date prévue :</label>
+    <input type="date" th:field="*{datePrevue}" required/><br/><br/>
+
+    <label>Date effectuée :</label>
+    <input type="date" th:field="*{dateEffectuee}"/><br/><br/>
+
+    <label>Commentaire :</label><br/>
+    <textarea th:field="*{commentaire}" rows="4" cols="40"></textarea><br/><br/>
+
+    <button type="submit">Modifier</button>
+</form>
+
+<br/>
+<a href="/entretiens">⬅ Retour à la liste</a>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter Affectation</title>
+</head>
+<body>
+
+<h2>Ajouter une affectation</h2>
+
+<!-- ✅ Affichage du message d’erreur -->
+<div th:if="${errorMessage}" style="color: red; font-weight: bold; margin-bottom: 10px;">
+    <p th:text="${errorMessage}"></p>
+</div>
+<div th:if="${aucunVehiculeDispo}" style="color: red; font-weight: bold; margin-bottom: 10px;">
+     Aucun véhicule disponible actuellement pour l'affectation.
+</div>
+
+
+<form th:action="@{/ajouter-affectation}" th:object="${affectation}" method="post">
+
+
+    <label>Date de début:</label>
+    <input type="date" th:field="*{dateDebut}" required/><br/><br/>
+
+    <label>Date de fin:</label>
+    <input type="date" th:field="*{dateFin}" required/><br/><br/>
+
+    <label>Utilisateur:</label>
+    <select th:field="*{utilisateur.id}" required>
+        <option value="">-- Choisir un utilisateur --</option>
+        <option th:each="u : ${utilisateurs}"
+                th:value="${u.id}"
+                th:text="${u.nom + ' ' + u.prenom}">
+        </option>
+    </select><br/><br/>
+
+    <label>Véhicule:</label>
+    <select th:field="*{vehicule.id}" required>
+        <option value="">-- Choisir un véhicule --</option>
+        <option th:each="v : ${vehicules}"
+                th:value="${v.id}"
+                th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}">
+        </option>
+    </select><br/><br/>
+
+
+    <button type="submit" th:disabled="${aucunVehiculeDispo}">Ajouter</button>
+
+</form>
+
+<br/>
+<a href="/affectations">⬅ Retour à la liste</a>
+
+</body>
+</html>

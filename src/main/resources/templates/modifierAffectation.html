@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier Affectation</title>
+</head>
+<body>
+
+<h2>Modifier Affectation</h2>
+
+<!-- ✅ Affichage du message d’erreur -->
+<div th:if="${errorMessage}" style="color:red; margin-bottom:10px;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<!-- ✅ Action : rediriger vers le bon endpoint -->
+<form th:action="@{'/modifier-affectation/' + ${affectation.id}}" th:object="${affectation}" method="post">
+
+    <!-- ID caché -->
+    <input type="hidden" th:field="*{id}" />
+
+    <!-- Véhicule -->
+    <label>Véhicule :</label>
+    <select th:field="*{vehicule.id}" required>
+        <option value="">-- Choisir un véhicule --</option>
+        <option th:each="v : ${vehicules}"
+                th:value="${v.id}"
+                th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}"
+                th:selected="${v.id} == ${affectation.vehicule.id}">
+        </option>
+    </select>
+    <br/><br/>
+
+    <!-- Utilisateur -->
+    <label>Utilisateur :</label>
+    <select th:field="*{utilisateur.id}" required>
+        <option value="">-- Choisir un utilisateur --</option>
+        <option th:each="u : ${utilisateurs}"
+                th:value="${u.id}"
+                th:text="${u.nom + ' ' + u.prenom}"
+                th:selected="${u.id} == ${affectation.utilisateur.id}">
+        </option>
+    </select>
+    <br/><br/>
+
+    <!-- Dates -->
+    <label>Date de début :</label>
+    <input type="date" th:field="*{dateDebut}" required />
+    <br/><br/>
+
+    <label>Date de fin :</label>
+    <input type="date" th:field="*{dateFin}" required />
+    <br/><br/>
+
+    <button type="submit">Modifier</button>
+</form>
+
+<br/>
+<a th:href="@{/affectations}">⬅ Retour à la liste</a>
+
+</body>
+</html>

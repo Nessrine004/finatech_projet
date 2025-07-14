@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Affectations</title>
+</head>
+<body>
+<h2>Liste des Affectations</h2>
+
+<a th:href="@{/ajouter-affectation}">
+    <button>Nouvelle Affectation</button>
+</a>
+
+<ul>
+    <li th:each="a : ${affectations}">
+        <!-- Véhicule -->
+        <div>
+            Véhicule :
+            <span th:if="${a.vehicule != null}"
+                  th:text="${a.vehicule.marque + ' ' + a.vehicule.modele}">
+            </span>
+            <span th:if="${a.vehicule == null}">[Véhicule inconnu]</span>
+            <br/>
+
+            <!-- Utilisateur -->
+            Utilisateur :
+            <span th:if="${a.utilisateur != null}"
+                  th:text="${a.utilisateur.nom + ' ' + a.utilisateur.prenom}">
+            </span>
+            <span th:if="${a.utilisateur == null}">[Utilisateur inconnu]</span>
+            <br/>
+
+            <!-- Dates -->
+            Période : du <span th:text="${a.dateDebut}"></span>
+            au <span th:text="${a.dateFin}"></span>
+            <br/><br/>
+
+            <!-- Boutons actions -->
+            <a th:href="@{'/modifier-affectation/' + ${a.id}}">
+                <button>Modifier</button>
+            </a>
+
+            <form th:action="@{'/supprimer-affectation/' + ${a.id}}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Confirmer la suppression ?')">Supprimer</button>
+            </form>
+        </div>
+        <hr/>
+    </li>
+</ul>
+
+<a th:href="@{/vehicules}">⬅ Retour aux véhicules</a>
+</body>
+</html>

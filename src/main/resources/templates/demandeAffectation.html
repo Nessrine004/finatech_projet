@@ -1,0 +1,39 @@
+<h2>Demande d'affectation</h2>
+<form action="#" th:action="@{/demande-affectation}" th:object="${demande}" method="post">
+    <div>
+        <label>Nom :</label>
+        <input type="text" th:field="*{nom}" required />
+    </div>
+    <div>
+        <label>Email :</label>
+        <input type="email" th:field="*{email}" required />
+    </div>
+    <label>Date de début :</label>
+    <input type="date" th:field="*{dateDebut}" required/><br/><br/>
+
+    <label>Date de fin :</label>
+    <input type="date" th:field="*{dateFin}" required/><br/><br/>
+
+    <div>
+        <label>Mission :</label>
+        <input type="text" th:field="*{mission}" required />
+    </div>
+    <div>
+        <label>Client :</label>
+        <input type="text" th:field="*{client}" required />
+    </div>
+    <div>
+        <label>Lieu :</label>
+        <input type="text" th:field="*{lieu}" required />
+    </div>
+    <div>
+        <button type="submit">Envoyer la demande</button>
+    </div>
+
+    <div th:if="${success}">
+        ✅ <span th:text="${success}"></span>
+    </div>
+    <div th:if="${error}">
+        ❌ <span th:text="${error}"></span>
+    </div>
+</form>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un véhicule</title>
+</head>
+<body>
+<h2>Ajouter un véhicule</h2>
+
+<form th:action="@{/ajouter-vehicule}" th:object="${vehicule}" method="post">
+    <label>Marque:</label>
+    <input type="text" th:field="*{marque}" required><br>
+
+    <label>Modèle:</label>
+    <input type="text" th:field="*{modele}" required><br>
+
+    <label>Plaque d'immatriculation:</label>
+    <input type="text" th:field="*{plaqueImmatriculation}" required><br>
+
+    <label>Kilométrage:</label>
+    <input type="number" th:field="*{kilometrage}" required><br>
+
+    <label>Statut:</label>
+    <select th:field="*{statut}">
+        <option th:each="s : ${statuts}"
+                th:value="${s}"
+                th:text="${s.label}">
+        </option>
+    </select>
+
+    <button type="submit">Ajouter</button>
+</form>
+
+<br>
+<a th:href="@{/vehicules}">Retour à la liste</a>
+</body>
+</html>
