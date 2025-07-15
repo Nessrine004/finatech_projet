@@ -13,7 +13,7 @@
     <p th:text="${successMessage}"></p>
 </div>
 
-<a href="/ajouter-assurance">➕ Nouvelle assurance</a>
+<a href="/ajouter-assurance"> Nouvelle assurance</a>
 <br/><br/>
 
 <table border="1" cellpadding="8">
@@ -37,10 +37,10 @@
         <td th:text="${a.dateFin}"></td>
         <td th:text="${a.effectuePar.nom + ' ' + a.effectuePar.prenom}"></td>
         <td>
-            <a th:href="@{'/modifier-assurance/' + ${a.id}}">✏️ Modifier</a>
+            <a th:href="@{'/modifier-assurance/' + ${a.id}}"> Modifier</a>
             |
             <form th:action="@{'/supprimer-assurance/' + ${a.id}}" method="post" style="display:inline;">
-                <button type="submit" onclick="return confirm('Confirmer la suppression ?')">🗑 Supprimer</button>
+                <button type="submit" onclick="return confirm('Confirmer la suppression ?')"> Supprimer</button>
             </form>
         </td>
     </tr>
