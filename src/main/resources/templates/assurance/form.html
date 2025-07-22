@@ -1,54 +1,112 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${assurance.id == null ? 'Ajouter une assurance' : 'Modifier l\'assurance'}"></title>
+    <title>Ajouter une assurance</title>
+    <style>
+        .form-container {
+            background-color: #e9eef5;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+        .form-container label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="date"],
+        .form-container textarea,
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+        }
+        .form-container button[type="submit"] {
+            background-color: #0092d1;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .form-container a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0099d1;
+            text-decoration: underline;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
+
 <div th:replace="fragments/nav-bar :: navbar"></div>
 
-<h2 th:text="${assurance.id == null ? 'Ajouter une assurance' : 'Modifier l\'assurance'}"></h2>
+<h2 th:text="${assurance.id} == null ? 'Ajouter une assurance' : 'Modifier l\'assurance'"></h2>
+<div th:if="${error}" style="color: red; text-align: center;">
+    <p th:text="${error}"></p>
+</div>
 
-<div th:if="${error}" style="color: red;" th:text="${error}"></div>
 
-<form th:action="@{${assurance.id == null} ? '/ajouter-assurance' : '/modifier-assurance/' + ${assurance.id}}"
-      method="post"
-      th:object="${assurance}"
-      enctype="multipart/form-data">
+<div class="form-container">
 
-    <label>Véhicule :</label>
-    <select th:field="*{vehicule}" required>
-        <option value="">-- Sélectionner un véhicule --</option>
-        <option th:each="v : ${vehicules}"
-                th:value="${v.id}"
-                th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}"></option>
-    </select><br><br>
+    <form th:action="@{/assurances/save}" th:object="${assurance}" method="post">
+        <!-- CSRF token -->
+        <input type="hidden" th:csrf="true"/>
 
-    <label>Effectué par :</label>
-    <select th:field="*{effectuePar}" required>
-        <option value="">-- Sélectionner un utilisateur --</option>
-        <option th:each="u : ${utilisateurs}"
-                th:value="${u.id}"
-                th:text="${u.prenom + ' ' + u.nom}"></option>
-    </select><br><br>
+        <input type="hidden" th:field="*{id}" />
 
-    <label>Compagnie :</label>
-    <input type="text" th:field="*{compagnie}" required><br><br>
+        <label>Compagnie d'assurance :</label>
+        <input type="text" th:field="*{compagnie}" required />
 
-    <label>Date début :</label>
-    <input type="date" th:field="*{dateDebut}" required><br><br>
+        <label>Date de début :</label>
+        <input type="date" th:field="*{dateDebut}" required />
 
-    <label>Date fin :</label>
-    <input type="date" th:field="*{dateFin}" required><br><br>
+        <label>Date de fin :</label>
+        <input type="date" th:field="*{dateFin}" required />
 
-    <label>Justificatif :</label>
-    <input type="file" name="fichierJustificatif" accept="image/*,application/pdf"><br><br>
+        <label>Usage :</label>
+        <input type="text" th:field="*{usage}" required />
 
-    <button type="submit">Valider</button>
-</form>
+        <label>Propriétaire :</label>
+        <input type="text" th:field="*{proprietaire}" required />
 
-<br>
-<a href="/assurances">⬅ Retour à la liste</a>
+        <label>Adresse :</label>
+        <textarea th:field="*{adresse}" required></textarea>
+
+        <label>Véhicule :</label>
+        <select th:field="*{vehicule}" required>
+            <option th:each="v : ${vehicules}" th:value="${v.id}"
+                    th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}">
+            </option>
+        </select>
+
+        <label>Effectué par :</label>
+        <select th:field="*{effectuePar}" required>
+            <option th:each="u : ${utilisateurs}"
+                    th:value="${u.id}"
+                    th:text="${u.prenom + ' ' + u.nom}">
+            </option>
+        </select>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <div style="text-align: center;">
+        <a th:href="@{/assurances}">⬅ Retour à la liste</a>
+    </div>
+</div>
 
 </body>
 </html>

@@ -1,51 +1,122 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Liste des Assurances</title>
+    <style>
+        .page-content {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            padding: 20px;
+        }
+
+        .page-content h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .table-container {
+            max-width: 95%;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .table-container th, .table-container td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table-container th {
+            background-color: #e9eef5;
+            font-weight: bold;
+        }
+
+        .table-container tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table-container a.btn {
+            display: inline-block;
+            background-color: #0069d1;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .table-container a.btn-secondary {
+            background-color: #cccccc;
+            color: #333;
+        }
+
+        .table-container .actions a {
+            margin-right: 6px;
+        }
+
+        .text-center {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
+
 <div th:replace="fragments/nav-bar :: navbar"></div>
 
-<h2>Liste des Assurances</h2>
+<div class="page-content">
+    <h2>Liste des Assurances</h2>
 
-<a href="/ajouter-assurance">➕ Nouvelle assurance</a><br><br>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Véhicule</th>
+                <th>Compagnie</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Usage</th>
+                <th>Propriétaire</th>
+                <th>Adresse</th>
+                <th>Responsable</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${assurances}">
+                <td th:text="${a.vehicule.marque + ' ' + a.vehicule.modele + ' (' + a.vehicule.plaqueImmatriculation + ')'}"></td>
+                <td th:text="${a.compagnie}"></td>
+                <td th:text="${a.dateDebut}"></td>
+                <td th:text="${a.dateFin}"></td>
+                <td th:text="${a.usage}"></td>
+                <td th:text="${a.proprietaire}"></td>
+                <td th:text="${a.adresse}"></td>
+                <td th:text="${a.effectuePar.prenom + ' ' + a.effectuePar.nom}"></td>
+                <td class="actions">
+                    <a th:href="@{'/modifier-assurance/' + ${a.id}}" class="btn">✏️</a>
+                    <form th:action="@{'/supprimer-assurance/' + ${a.id}}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Supprimer cette assurance ?')" class="btn btn-secondary">🗑️</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-<table border="1" cellpadding="8">
-    <thead>
-    <tr>
-        <th>Véhicule</th>
-        <th>Compagnie</th>
-        <th>Date début</th>
-        <th>Date fin</th>
-        <th>Responsable</th>
-        <th>Justificatif</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="a : ${assurances}">
-        <td th:text="${a.vehicule.marque + ' ' + a.vehicule.modele + ' (' + a.vehicule.plaqueImmatriculation + ')'}"></td>
-        <td th:text="${a.compagnie}"></td>
-        <td th:text="${a.dateDebut}"></td>
-        <td th:text="${a.dateFin}"></td>
-        <td th:text="${a.effectuePar.prenom + ' ' + a.effectuePar.nom}"></td>
-        <td>
-            <span th:if="${a.justificatif != null}">
-                <a th:href="@{'/assurances/justificatif/' + ${a.id}}" target="_blank">Voir</a>
-            </span>
-            <span th:if="${a.justificatif == null}">—</span>
-        </td>
-        <td>
-            <a th:href="@{'/modifier-assurance/' + ${a.id}}">✏️</a>
-            |
-            <form th:action="@{'/supprimer-assurance/' + ${a.id}}" method="post" style="display:inline;">
-                <button type="submit" onclick="return confirm('Supprimer cette assurance ?')">🗑️</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+        <div class="text-center">
+            <a th:href="@{/ajouter-assurance}" class="btn">➕ Nouvelle assurance</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

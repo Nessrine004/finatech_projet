@@ -35,7 +35,12 @@ import java.util.List;
 
         @OneToMany(mappedBy = "demandeur")
         private List<Reservation> reservations;
-
-
+    @Override
+    public String toString() {
+        return prenom + " " + nom;
     }
+
+
+
+}
 

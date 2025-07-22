@@ -23,11 +23,11 @@ public class Assurance {
     private LocalDate dateFin;
     @ManyToOne
     private Utilisateur effectuePar;
+
+    @Column(name = "type_usage")
     private String usage;
+
     private String proprietaire;
     private String adresse;
-    @Lob
-    private byte[] justificatif;
-
 }
 

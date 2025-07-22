@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "vehicule")
 public class Panne {
 
     @Id
@@ -22,7 +24,6 @@ public class Panne {
     private Double montant;
 
     private LocalDate datePrevue;
-
     private LocalDate dateEffectuee;
 
     private String commentaire;

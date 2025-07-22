@@ -3,12 +3,15 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
-@Entity @Data
+@Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"pannes", "assurances", "affectations", "reservations"})
 public class Vehicule {
 
     @Id @GeneratedValue
@@ -26,13 +29,12 @@ public class Vehicule {
     private List<Affectation> affectations;
 
     @OneToMany(mappedBy = "vehicule")
-    private List<Panne> entretiens;
+    private List<Panne> pannes;
 
     @OneToMany(mappedBy = "vehicule")
     private List<Assurance> assurances;
 
     @OneToMany(mappedBy = "vehicule")
     private List<Reservation> reservations;
-
-    // getters, setters, constructeurs
 }
+
