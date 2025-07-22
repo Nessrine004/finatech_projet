@@ -1,0 +1,43 @@
+<nav th:fragment="navbar"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     style="background-color: #f7f9fb; padding: 8px 20px; display: flex; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08);">
+
+    <!-- Logo Finatech -->
+    <img th:src="@{/images/finatech-logo.png}" alt="Finatech Logo" style="height: 38px; margin-right: 28px;" />
+
+    <!-- Liens -->
+    <ul style="list-style: none; display: flex; gap: 26px; margin: 0; padding: 0; align-items: center; flex-grow: 1;">
+        <li><a th:href="@{/}" style="text-decoration: none; color: #007acc;">Accueil</a></li>
+
+        <!-- ADMIN -->
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/affectations}" style="color: #333;">Gérer les Affectations</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/utilisateurs}" style="color: #333;">Gérer les Utilisateurs</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/vehicules}" style="color: #333;">Gérer les Véhicules</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/assurances-readonly}" style="color: #333;">Voir Assurances</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/entretiens-readonly}" style="color: #333;">Voir Entretiens</a></li>
+
+        <!-- MANAGER -->
+        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/affectations}" style="color: #333;">Gérer les Affectations</a></li>
+        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/vehicules}" style="color: #333;">Gérer les Véhicules</a></li>
+        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/assurances-readonly}" style="color: #333;">Voir Assurances</a></li>
+        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/entretiens-readonly}" style="color: #333;">Voir Entretiens</a></li>
+
+        <!-- TECHNICIEN -->
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/vehicules-readonly}" style="color: #333;">Voir les Véhicules</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/affectations-readonly}" style="color: #333;">Voir les Affectations</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/demande-affectation}" style="color: #333;">Demander une Affectation</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/assurances}" style="color: #333;">Gérer les Assurances</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/pannes}" style="color: #333;">Gérer les pannes</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/visites-techniques}" style="color: #333;">Gérer les visites-techniques</a></li>
+
+        <!-- Déconnexion -->
+        <li style="margin-left: auto;" sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" style="background-color: #007ecc; color: white; border: none; padding: 6px 14px; border-radius: 16px; cursor: pointer;">
+                    Déconnexion
+                </button>
+            </form>
+        </li>
+    </ul>
+</nav>

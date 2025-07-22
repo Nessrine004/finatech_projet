@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:replace="fragments/nav-bar :: navbar"></div>
+
 <h2>Demande d'affectation</h2>
 <form action="#" th:action="@{/demande-affectation}" th:object="${demande}" method="post">
     <div>

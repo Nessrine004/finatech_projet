@@ -2,88 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${assurance.id} == null ? 'Ajouter Assurance' : 'Modifier Assurance'">Formulaire Assurance</title>
+    <title th:text="${assurance.id == null ? 'Ajouter une assurance' : 'Modifier l\'assurance'}"></title>
 </head>
 <body>
+<div th:replace="fragments/nav-bar :: navbar"></div>
 
-<h2 th:text="${assurance.id} == null ? 'Ajouter une assurance' : 'Modifier l\'assurance'"></h2>
+<h2 th:text="${assurance.id == null ? 'Ajouter une assurance' : 'Modifier l\'assurance'}"></h2>
 
-<!-- Message d'erreur -->
-<div th:if="${errorMessage}" style="color: red;">
-    <p th:text="${errorMessage}"></p>
-</div>
+<div th:if="${error}" style="color: red;" th:text="${error}"></div>
 
-<!-- ✅ Formulaire pour AJOUT -->
-<form th:if="${assurance.id} == null"
-      th:action="@{/ajouter-assurance}"
-      th:object="${assurance}" method="post">
+<form th:action="@{${assurance.id == null} ? '/ajouter-assurance' : '/modifier-assurance/' + ${assurance.id}}"
+      method="post"
+      th:object="${assurance}"
+      enctype="multipart/form-data">
 
     <label>Véhicule :</label>
-    <select th:field="*{vehicule.id}" required>
+    <select th:field="*{vehicule}" required>
         <option value="">-- Sélectionner un véhicule --</option>
         <option th:each="v : ${vehicules}"
                 th:value="${v.id}"
-                th:text="${v.marque + ' ' + v.modele + ' - ' + v.plaqueImmatriculation}">
-        </option>
-    </select><br/><br/>
+                th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}"></option>
+    </select><br><br>
 
-    <label>Effectué par (Responsable) :</label>
-    <select th:field="*{effectuePar.id}" required>
+    <label>Effectué par :</label>
+    <select th:field="*{effectuePar}" required>
         <option value="">-- Sélectionner un utilisateur --</option>
         <option th:each="u : ${utilisateurs}"
                 th:value="${u.id}"
-                th:text="${u.nom + ' ' + u.prenom}">
-        </option>
-    </select><br/><br/>
+                th:text="${u.prenom + ' ' + u.nom}"></option>
+    </select><br><br>
 
     <label>Compagnie :</label>
-    <input type="text" th:field="*{compagnie}" required/><br/><br/>
+    <input type="text" th:field="*{compagnie}" required><br><br>
 
-    <label>Date de début :</label>
-    <input type="date" th:field="*{dateDebut}" required/><br/><br/>
+    <label>Date début :</label>
+    <input type="date" th:field="*{dateDebut}" required><br><br>
 
-    <label>Date de fin :</label>
-    <input type="date" th:field="*{dateFin}" required/><br/><br/>
+    <label>Date fin :</label>
+    <input type="date" th:field="*{dateFin}" required><br><br>
 
-    <button type="submit">Ajouter</button>
+    <label>Justificatif :</label>
+    <input type="file" name="fichierJustificatif" accept="image/*,application/pdf"><br><br>
+
+    <button type="submit">Valider</button>
 </form>
 
-<!-- ✅ Formulaire pour MODIFICATION -->
-<form th:if="${assurance.id} != null"
-      th:action="@{/modifier-assurance/{id}(id=${assurance.id})}"
-      th:object="${assurance}" method="post">
-
-    <label>Véhicule :</label>
-    <select th:field="*{vehicule.id}" required>
-        <option value="">-- Sélectionner un véhicule --</option>
-        <option th:each="v : ${vehicules}"
-                th:value="${v.id}"
-                th:text="${v.marque + ' ' + v.modele + ' - ' + v.plaqueImmatriculation}">
-        </option>
-    </select><br/><br/>
-
-    <label>Effectué par (Responsable) :</label>
-    <select th:field="*{effectuePar.id}" required>
-        <option value="">-- Sélectionner un utilisateur --</option>
-        <option th:each="u : ${utilisateurs}"
-                th:value="${u.id}"
-                th:text="${u.nom + ' ' + u.prenom}">
-        </option>
-    </select><br/><br/>
-
-    <label>Compagnie :</label>
-    <input type="text" th:field="*{compagnie}" required/><br/><br/>
-
-    <label>Date de début :</label>
-    <input type="date" th:field="*{dateDebut}" required/><br/><br/>
-
-    <label>Date de fin :</label>
-    <input type="date" th:field="*{dateFin}" required/><br/><br/>
-
-    <button type="submit">Modifier</button>
-</form>
-
-<br/>
+<br>
 <a href="/assurances">⬅ Retour à la liste</a>
 
 </body>

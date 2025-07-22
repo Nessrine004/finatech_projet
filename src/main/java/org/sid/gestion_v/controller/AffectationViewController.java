@@ -90,16 +90,14 @@ public class AffectationViewController {
             return "modifierAffectation";
         }
     }
-
-
-
-
-
-
     @PostMapping("/supprimer-affectation/{id}")
     public String deleteAffectation(@PathVariable Long id) {
         affectationService.deleteAffectation(id);
         return "redirect:/affectations";
     }
-
+    @GetMapping("/affectations-readonly")
+    public String listeAffectationsReadonly(Model model) {
+        model.addAttribute("affectations", affectationService.getAllAffectations());
+        return "affectations-readonly";
+    }
 }

@@ -6,28 +6,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Assurance {
+public class VisiteTechnique {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private LocalDate dateVisite;
+
+    private String lieu;
+
+    private String commentaire;
+
+    @Lob
+    private byte[] justificatif;
 
     @ManyToOne
     private Vehicule vehicule;
 
-    private String compagnie;
-    private LocalDate dateDebut;
-    private LocalDate dateFin;
     @ManyToOne
     private Utilisateur effectuePar;
-    private String usage;
-    private String proprietaire;
-    private String adresse;
-    @Lob
-    private byte[] justificatif;
-
 }
-

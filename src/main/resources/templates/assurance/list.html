@@ -5,42 +5,42 @@
     <title>Liste des Assurances</title>
 </head>
 <body>
+<div th:replace="fragments/nav-bar :: navbar"></div>
 
 <h2>Liste des Assurances</h2>
 
-<!-- Message de succès -->
-<div th:if="${successMessage}" style="color: green;">
-    <p th:text="${successMessage}"></p>
-</div>
-
-<a href="/ajouter-assurance"> Nouvelle assurance</a>
-<br/><br/>
+<a href="/ajouter-assurance">➕ Nouvelle assurance</a><br><br>
 
 <table border="1" cellpadding="8">
     <thead>
     <tr>
-        <th>ID</th>
         <th>Véhicule</th>
         <th>Compagnie</th>
         <th>Date début</th>
         <th>Date fin</th>
         <th>Responsable</th>
+        <th>Justificatif</th>
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="a : ${assurances}">
-        <td th:text="${a.id}"></td>
         <td th:text="${a.vehicule.marque + ' ' + a.vehicule.modele + ' (' + a.vehicule.plaqueImmatriculation + ')'}"></td>
         <td th:text="${a.compagnie}"></td>
         <td th:text="${a.dateDebut}"></td>
         <td th:text="${a.dateFin}"></td>
-        <td th:text="${a.effectuePar.nom + ' ' + a.effectuePar.prenom}"></td>
+        <td th:text="${a.effectuePar.prenom + ' ' + a.effectuePar.nom}"></td>
         <td>
-            <a th:href="@{'/modifier-assurance/' + ${a.id}}"> Modifier</a>
+            <span th:if="${a.justificatif != null}">
+                <a th:href="@{'/assurances/justificatif/' + ${a.id}}" target="_blank">Voir</a>
+            </span>
+            <span th:if="${a.justificatif == null}">—</span>
+        </td>
+        <td>
+            <a th:href="@{'/modifier-assurance/' + ${a.id}}">✏️</a>
             |
             <form th:action="@{'/supprimer-assurance/' + ${a.id}}" method="post" style="display:inline;">
-                <button type="submit" onclick="return confirm('Confirmer la suppression ?')"> Supprimer</button>
+                <button type="submit" onclick="return confirm('Supprimer cette assurance ?')">🗑️</button>
             </form>
         </td>
     </tr>

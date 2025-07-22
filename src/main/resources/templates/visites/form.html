@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une visite technique</title>
+    <style>
+        .form-container {
+            background-color: #e9eef5;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .form-container label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        .form-container button {
+            background-color: #005bd1;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .form-container a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0062d1;
+            text-decoration: underline;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/nav-bar :: navbar"></div>
+
+<h2>Ajouter une visite technique</h2>
+
+<div class="form-container">
+    <form th:action="@{/ajouter-visite-technique}" method="post" enctype="multipart/form-data" th:object="${visiteTechnique}">
+
+        <label>Date de la visite :</label>
+        <input type="date" th:field="*{dateVisite}" required/>
+
+        <label>Lieu :</label>
+        <input type="text" th:field="*{lieu}" required/>
+
+        <label>Commentaire :</label>
+        <textarea th:field="*{commentaire}"></textarea>
+
+        <label>Véhicule :</label>
+        <select th:field="*{vehicule}" required>
+            <option th:each="v : ${vehicules}" th:value="${v.id}" th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}"></option>
+        </select>
+
+        <label>Effectué par :</label>
+        <select th:field="*{effectuePar}" required>
+            <option th:each="u : ${utilisateurs}" th:value="${u.id}" th:text="${u.prenom + ' ' + u.nom}"></option>
+        </select>
+
+        <label>Justificatif (image ou PDF) :</label>
+        <input type="file" name="justificatifFile" accept="image/*,.pdf"/>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <div style="text-align: center;">
+        <a th:href="@{/visites-techniques}">⬅ Retour à la liste</a>
+    </div>
+</div>
+
+</body>
+</html>

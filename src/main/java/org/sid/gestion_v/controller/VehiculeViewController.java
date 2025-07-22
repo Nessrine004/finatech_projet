@@ -57,6 +57,10 @@ public class VehiculeViewController {
         }
         return "redirect:/vehicules";
     }
-
+    @GetMapping("/vehicules-readonly")
+    public String listeVehiculesReadonly(Model model) {
+        model.addAttribute("vehicules", vehiculeService.getAllVehicules());
+        return "vehicules-readonly";
+    }
 
 }

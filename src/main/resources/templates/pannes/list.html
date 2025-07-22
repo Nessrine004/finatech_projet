@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des pannes</title>
+  <style>
+    .page-content {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      padding: 20px;
+    }
+
+    .page-content h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .table-container {
+      max-width: 95%;
+      margin: auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-container table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .table-container th, .table-container td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .table-container th {
+      background-color: #e9eef5;
+      font-weight: bold;
+    }
+
+    .table-container tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .table-container a.btn {
+      display: inline-block;
+      background-color: #0069d1;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .table-container a.btn-secondary {
+      background-color: #cccccc;
+      color: #333;
+    }
+
+    .table-container .actions a {
+      margin-right: 6px;
+    }
+
+    .text-center {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 🌐 Ta nav-bar reste inchangée -->
+<div th:replace="fragments/nav-bar :: navbar"></div>
+
+<!-- ✅ Style uniquement dans cette div -->
+<div class="page-content">
+  <h2>Liste des pannes</h2>
+
+  <div class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>Véhicule</th>
+        <th>Type</th>
+        <th>Montant (DH)</th>
+        <th>Date prévue</th>
+        <th>Date effectuée</th>
+        <th>Effectué par</th>
+        <th>Commentaire</th>
+        <th>Justificatif</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="p : ${pannes}">
+        <td th:text="${p.vehicule.marque + ' ' + p.vehicule.modele}"></td>
+        <td th:text="${p.type}"></td>
+        <td th:text="${p.montant}"></td>
+        <td th:text="${p.datePrevue}"></td>
+        <td th:text="${p.dateEffectuee}"></td>
+        <td th:text="${p.effectuePar.prenom + ' ' + p.effectuePar.nom}"></td>
+        <td th:text="${p.commentaire}"></td>
+        <td>
+          <span th:if="${p.image != null}">
+            <a th:href="@{'/pannes/image/' + ${p.id}}" target="_blank" class="btn"> Voir</a>
+          </span>
+          <span th:if="${p.image == null}">—</span>
+        </td>
+        <td class="actions">
+          <a th:href="@{'/supprimer-panne/' + ${p.id}}"
+             onclick="return confirm('Confirmer la suppression ?')"
+             class="btn btn-secondary"> Supprimer</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="text-center">
+      <a th:href="@{/ajouter-panne}" class="btn">➕ Ajouter une panne</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

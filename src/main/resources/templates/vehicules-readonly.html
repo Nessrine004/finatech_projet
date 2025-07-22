@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Véhicules - Lecture seule</title>
+</head>
+<body>
+<div th:replace="fragments/nav-bar :: navbar"></div>
+<h2>Liste des véhicules</h2>
+
+<ul>
+  <li th:each="v : ${vehicules}">
+    <strong th:text="${v.marque + ' ' + v.modele}"></strong><br>
+    Immatriculation : <span th:text="${v.plaqueImmatriculation}"></span><br>
+    Kilométrage : <span th:text="${v.kilometrage} + ' km'"></span><br>
+    Statut : <span th:text="${v.statut.label}"></span><br><br>
+  </li>
+</ul>
+</body>
+</html>

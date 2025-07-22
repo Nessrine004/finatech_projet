@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head><meta charset="UTF-8"><title>Ajouter Utilisateur</title></head>
 <body>
+<div th:replace="fragments/nav-bar :: navbar"></div>
 <h2>Ajouter un utilisateur</h2>
 <form th:action="@{'/modifier-utilisateur/' + ${utilisateur.id}}" th:object="${utilisateur}" method="post">
 

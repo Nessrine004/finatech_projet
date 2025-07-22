@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AssuranceServiceImpl implements AssuranceService {
+
     private final AssuranceRepository assuranceRepository;
     private final EmailService emailService;
 
@@ -48,6 +49,20 @@ public class AssuranceServiceImpl implements AssuranceService {
     public void deleteAssurance(Long id) {
         assuranceRepository.deleteById(id);
     }
+
+    // ✅ Méthode utilisée dans le controller (ajout direct / modification)
+    @Override
+    public void save(Assurance assurance) {
+        assuranceRepository.save(assurance);
+    }
+
+    // ✅ Méthode utilisée dans le controller (suppression)
+    @Override
+    public void delete(Long id) {
+        assuranceRepository.deleteById(id);
+    }
+
+    // 📩 Rappel automatique
     @Scheduled(cron = "0 10 8 * * *") // tous les jours à 8h10
     public void envoyerRappelsAssurance() {
         LocalDate dans2Jours = LocalDate.now().plusDays(2);
@@ -87,5 +102,4 @@ public class AssuranceServiceImpl implements AssuranceService {
             }
         }
     }
-
 }

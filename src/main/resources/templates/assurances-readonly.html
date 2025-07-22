@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Assurances</title>
+</head>
+<body>
+<div th:replace="fragments/nav-bar :: navbar"></div>
+<h2>Liste des Assurances</h2>
+
+<table border="1" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Véhicule</th>
+        <th>Compagnie</th>
+        <th>Date début</th>
+        <th>Date fin</th>
+        <th>Responsable</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="a : ${assurances}">
+        <td th:text="${a.id}"></td>
+        <td th:text="${a.vehicule.marque + ' ' + a.vehicule.modele + ' (' + a.vehicule.plaqueImmatriculation + ')'}"></td>
+        <td th:text="${a.compagnie}"></td>
+        <td th:text="${a.dateDebut}"></td>
+        <td th:text="${a.dateFin}"></td>
+        <td th:text="${a.effectuePar.nom + ' ' + a.effectuePar.prenom}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

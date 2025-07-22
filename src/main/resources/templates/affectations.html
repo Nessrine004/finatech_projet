@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Liste des Affectations</title>
 </head>
 <body>
+<div th:replace="fragments/nav-bar :: navbar"></div>
 <h2>Liste des Affectations</h2>
 
 <a th:href="@{/ajouter-affectation}">
@@ -48,6 +51,6 @@
     </li>
 </ul>
 
-<a th:href="@{/vehicules}">⬅ Retour aux véhicules</a>
+<a th:href="@{/vehicules}">Retour aux véhicules</a>
 </body>
 </html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Affectations - Lecture seule</title>
+</head>
+<body>
+<div th:replace="fragments/nav-bar :: navbar"></div>
+<h2>Liste des Affectations</h2>
+
+<ul>
+    <li th:each="a : ${affectations}">
+        <div>
+            Véhicule :
+            <span th:if="${a.vehicule != null}"
+                  th:text="${a.vehicule.marque + ' ' + a.vehicule.modele}"></span>
+            <span th:if="${a.vehicule == null}">[Véhicule inconnu]</span><br/>
+
+            Utilisateur :
+            <span th:if="${a.utilisateur != null}"
+                  th:text="${a.utilisateur.nom + ' ' + a.utilisateur.prenom}"></span>
+            <span th:if="${a.utilisateur == null}">[Utilisateur inconnu]</span><br/>
+
+            Période : du <span th:text="${a.dateDebut}"></span> au <span th:text="${a.dateFin}"></span><br/><br/>
+        </div>
+        <hr/>
+    </li>
+</ul>
+</body>
+</html>

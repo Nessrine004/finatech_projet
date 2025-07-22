@@ -26,7 +26,7 @@ public class Vehicule {
     private List<Affectation> affectations;
 
     @OneToMany(mappedBy = "vehicule")
-    private List<Entretien> entretiens;
+    private List<Panne> entretiens;
 
     @OneToMany(mappedBy = "vehicule")
     private List<Assurance> assurances;

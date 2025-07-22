@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des entretiens</title>
+</head>
+<body>
+<div th:replace="fragments/nav-bar :: navbar"></div>
+<h2>Liste des entretiens</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Véhicule</th>
+        <th>Type</th>
+        <th>Date prévue</th>
+        <th>Date effectuée</th>
+        <th>Commentaire</th>
+        <th>Effectué par</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="e : ${entretiens}">
+        <td th:text="${e.vehicule?.marque + ' ' + e.vehicule?.modele}"></td>
+        <td th:text="${e.type}"></td>
+        <td th:text="${e.datePrevue}"></td>
+        <td th:text="${e.dateEffectuee}"></td>
+        <td th:text="${e.commentaire}"></td>
+        <td th:text="${e.effectuePar?.nom + ' ' + e.effectuePar?.prenom}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Ajouter un véhicule</title>
 </head>
 <body>
+<div th:replace="fragments/nav-bar :: navbar"></div>
 <h2>Ajouter un véhicule</h2>
 
 <form th:action="@{/ajouter-vehicule}" th:object="${vehicule}" method="post">

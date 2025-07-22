@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des visites techniques</title>
+    <style>
+        .page-content {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .table-container {
+            max-width: 95%;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #e9eef5;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a.btn {
+            display: inline-block;
+            background-color: #0073d1;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        a.btn-secondary {
+            background-color: #cccccc;
+            color: #333;
+        }
+
+        .actions a {
+            margin-right: 6px;
+        }
+
+        .text-center {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/nav-bar :: navbar"></div>
+
+<div class="page-content">
+    <h2>Liste des visites techniques</h2>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Véhicule</th>
+                <th>Date visite</th>
+                <th>Lieu</th>
+                <th>Effectué par</th>
+                <th>Commentaire</th>
+                <th>Justificatif</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="v : ${visites}">
+                <td th:text="${v.vehicule.marque + ' ' + v.vehicule.modele}"></td>
+                <td th:text="${v.dateVisite}"></td>
+                <td th:text="${v.lieu}"></td>
+                <td th:text="${v.effectuePar.prenom + ' ' + v.effectuePar.nom}"></td>
+                <td th:text="${v.commentaire}"></td>
+                <td>
+                    <span th:if="${v.justificatif != null}">
+                        <a th:href="@{'/visites-techniques/justificatif/' + ${v.id}}" target="_blank" class="btn"> Voir</a>
+                    </span>
+                    <span th:if="${v.justificatif == null}">—</span>
+                </td>
+                <td class="actions">
+                    <a th:href="@{'/supprimer-visite-technique/' + ${v.id}}" class="btn btn-secondary"
+                       onclick="return confirm('Confirmer la suppression ?')"> Supprimer</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <a th:href="@{/ajouter-visite-technique}" class="btn">➕ Ajouter une visite technique</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

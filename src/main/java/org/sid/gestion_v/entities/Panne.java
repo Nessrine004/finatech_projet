@@ -1,4 +1,5 @@
 package org.sid.gestion_v.entities;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,21 +11,28 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Entretien {
+public class Panne {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String type;
+
+    private Double montant;
+
+    private LocalDate datePrevue;
+
+    private LocalDate dateEffectuee;
+
+    private String commentaire;
+
+    @Lob
+    private byte[] image;
 
     @ManyToOne
     private Vehicule vehicule;
 
-    private String type;
-    private LocalDate datePrevue;
-    private LocalDate dateEffectuee;
-    private String commentaire;
     @ManyToOne
     private Utilisateur effectuePar;
-
-
 }
-
