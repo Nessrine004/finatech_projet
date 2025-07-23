@@ -59,6 +59,10 @@ public class SecurityConfig {
                                 "/assurances/**", "/pannes/**", "/visites-techniques/**"
                         ).hasRole("TECHNICIEN_INGENIEUR")
                         .requestMatchers(HttpMethod.POST, "/assurances/save").hasRole("TECHNICIEN_INGENIEUR")
+                        .requestMatchers("/carburants/**", "/ajouter-carburant/**").hasRole("TECHNICIEN_INGENIEUR")
+                        .requestMatchers("/cartes-carburant/**", "/ajouter-carte-carburant/**").hasRole("TECHNICIEN_INGENIEUR")
+
+
 
 
 
@@ -73,8 +77,4 @@ public class SecurityConfig {
                 .logout(logout -> logout.permitAll())
                 .build();
     }
-
-
-
-
 }

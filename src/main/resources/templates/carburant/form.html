@@ -2,9 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ajouter une panne</title>
+    <title>Ajouter un plein de carburant</title>
     <style>
-        /* Style uniquement appliqué au formulaire */
         .form-container {
             background-color: #e9eef5;
             padding: 30px;
@@ -22,8 +21,6 @@
         .form-container input[type="text"],
         .form-container input[type="number"],
         .form-container input[type="date"],
-        .form-container input[type="file"],
-        .form-container textarea,
         .form-container select {
             width: 100%;
             padding: 10px;
@@ -59,60 +56,44 @@
 </head>
 <body>
 
-<!-- Navbar conservée telle quelle -->
+<!-- Nav-bar inchangée -->
 <div th:replace="fragments/nav-bar :: navbar"></div>
 
-<h2>Ajouter une panne</h2>
+<h2>Ajouter un plein</h2>
 
 <div class="form-container">
+    <form th:action="@{/ajouter-carburant}" method="post" th:object="${carburant}">
+        <label>Date :</label>
+        <input type="date" th:field="*{date}" required/>
 
-    <form th:action="@{/ajouter-panne}" method="post" enctype="multipart/form-data" th:object="${panne}">
-
-        <label>Type de panne :</label>
-        <select th:field="*{type}" required>
-            <option value="">-- Choisir --</option>
-            <option value="Crevaison">Crevaison</option>
-            <option value="Batterie">Batterie</option>
-            <option value="Moteur">Moteur</option>
-            <option value="Freins">Freins</option>
-        </select>
-
-        <label>Montant (DH) :</label>
+        <label>Montant :</label>
         <input type="number" step="0.01" th:field="*{montant}" required/>
 
-        <label>Date prévue :</label>
-        <input type="date" th:field="*{datePrevue}" required/>
+        <label>Kilométrage :</label>
+        <input type="number" th:field="*{kilometrage}" required/>
 
-        <label>Date effectuée :</label>
-        <input type="date" th:field="*{dateEffectuee}"/>
+        <label>Lieu :</label>
+        <input type="text" th:field="*{lieu}" required/>
 
-        <label>Commentaire :</label>
-        <textarea th:field="*{commentaire}"></textarea>
-
-        <label>Véhicule :</label>
-        <select th:field="*{vehicule}" required>
-            <option th:each="v : ${vehicules}" th:value="${v.id}"
-                    th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}">
-            </option>
+        <label>Carte carburant :</label>
+        <select th:field="*{carteCarburant.id}" required>
+            <option value="">-- Choisir une carte --</option>
+            <option th:each="c : ${cartes}" th:value="${c.id}"
+                    th:text="${c.numeroCarte + ' - ' + c.fournisseur}"></option>
         </select>
 
         <label>Effectué par :</label>
-        <select th:field="*{effectuePar}" required>
-            <option th:each="u : ${utilisateurs}" th:value="${u.id}"
-                    th:text="${u.prenom + ' ' + u.nom}">
-            </option>
+        <select th:field="*{effectuePar.id}" required>
+            <option value="">-- Choisir un utilisateur --</option>
+            <option th:each="u : ${utilisateurs}" th:value="${u.id}" th:text="${u.nom}"></option>
         </select>
-
-        <label>Justificatif (image) :</label>
-        <input type="file" name="imageFile" accept="image/*"/>
 
         <button type="submit">Enregistrer</button>
     </form>
 
     <div style="text-align: center;">
-        <a th:href="@{/pannes}"> Retour à la liste</a>
+        <a th:href="@{/carburants}">Retour à la liste</a>
     </div>
-
 </div>
 
 </body>

@@ -76,6 +76,7 @@ public class AccountServiceImpl implements AccountService {
         appUser.getRoles().remove(appRole);
     }
 
+
     @Override
     public AppUser loadUserByNom(String nom) {
         return appUserRepository.findByNom(nom);

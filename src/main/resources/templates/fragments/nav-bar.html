@@ -30,6 +30,10 @@
         <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/assurances}" style="color: #333;">Gérer les Assurances</a></li>
         <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/pannes}" style="color: #333;">Gérer les pannes</a></li>
         <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/visites-techniques}" style="color: #333;">Gérer les visites-techniques</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/cartes-carburant}" style="color: #333;">Gérer les cartes-carburant</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/carburants}" style="color: #333;">Gérer les carburant</a></li>
+
+
 
         <!-- Déconnexion -->
         <li style="margin-left: auto;" sec:authorize="isAuthenticated()">

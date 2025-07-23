@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une carte carburant</title>
+    <style>
+        .form-container {
+            background-color: #e9eef5;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .form-container label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .form-container input[type="text"],
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        .form-container button[type="submit"] {
+            background-color: #0092d1;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .form-container a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0099d1;
+            text-decoration: underline;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar inchangée -->
+<div th:replace="fragments/nav-bar :: navbar"></div>
+
+<h2>Ajouter une carte carburant</h2>
+
+<div class="form-container">
+    <form th:action="@{/ajouter-carte-carburant}" th:object="${carteCarburant}" method="post">
+        <label>Numéro de carte :</label>
+        <input type="text" th:field="*{numeroCarte}" required/>
+
+        <label>Fournisseur :</label>
+        <input type="text" th:field="*{fournisseur}" required/>
+
+        <label>Véhicule associé :</label>
+        <select th:field="*{vehicule.id}" required>
+            <option value="">-- Choisir un véhicule --</option>
+            <option th:each="v : ${vehicules}" th:value="${v.id}"
+                    th:text="${v.marque + ' - ' + v.plaqueImmatriculation}">
+            </option>
+        </select>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+
+    <div style="text-align: center;">
+        <a th:href="@{/cartes-carburant}">Retour à la liste</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Liste des Assurances</title>
+    <title>Liste des pleins de carburant</title>
     <style>
         .page-content {
             font-family: Arial, sans-serif;
@@ -72,48 +72,46 @@
 </head>
 <body>
 
+<!-- 🌐 Navbar reste inchangée -->
 <div th:replace="fragments/nav-bar :: navbar"></div>
 
 <div class="page-content">
-    <h2>Liste des Assurances</h2>
+    <h2>Liste des pleins de carburant</h2>
 
     <div class="table-container">
         <table>
             <thead>
             <tr>
+                <th>Date</th>
+                <th>Montant (DH)</th>
+                <th>Kilométrage</th>
+                <th>Lieu</th>
+                <th>Carte carburant</th>
                 <th>Véhicule</th>
-                <th>Compagnie</th>
-                <th>Date début</th>
-                <th>Date fin</th>
-                <th>Usage</th>
-                <th>Propriétaire</th>
-                <th>Adresse</th>
-                <th>Responsable</th>
+                <th>Effectué par</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="a : ${assurances}">
-                <td th:text="${a.vehicule.marque + ' ' + a.vehicule.modele + ' (' + a.vehicule.plaqueImmatriculation + ')'}"></td>
-                <td th:text="${a.compagnie}"></td>
-                <td th:text="${a.dateDebut}"></td>
-                <td th:text="${a.dateFin}"></td>
-                <td th:text="${a.usage}"></td>
-                <td th:text="${a.proprietaire}"></td>
-                <td th:text="${a.adresse}"></td>
-                <td th:text="${a.effectuePar.prenom + ' ' + a.effectuePar.nom}"></td>
+            <tr th:each="c : ${carburants}">
+                <td th:text="${c.date}"></td>
+                <td th:text="${c.montant}"></td>
+                <td th:text="${c.kilometrage}"></td>
+                <td th:text="${c.lieu}"></td>
+                <td th:text="${c.carteCarburant.numeroCarte + ' - ' + c.carteCarburant.fournisseur}"></td>
+                <td th:text="${c.carteCarburant.vehicule.marque + ' ' + c.carteCarburant.vehicule.modele}"></td>
+                <td th:text="${c.effectuePar.prenom + ' ' + c.effectuePar.nom}"></td>
                 <td class="actions">
-                    <a th:href="@{'/modifier-assurance/' + ${a.id}}" class="btn">Modifier</a>
-                    <form th:action="@{'/supprimer-assurance/' + ${a.id}}" method="post" style="display:inline;">
-                        <button type="submit" onclick="return confirm('Supprimer cette assurance ?')" class="btn btn-secondary">Supprimer</button>
-                    </form>
+                    <a th:href="@{'/supprimer-carburant/' + ${c.id}}"
+                       onclick="return confirm('Confirmer la suppression ?')"
+                       class="btn btn-secondary">Supprimer</a>
                 </td>
             </tr>
             </tbody>
         </table>
 
         <div class="text-center">
-            <a th:href="@{/ajouter-assurance}" class="btn">Nouvelle assurance</a>
+            <a th:href="@{/ajouter-carburant}" class="btn"> Ajouter un plein</a>
         </div>
     </div>
 </div>
