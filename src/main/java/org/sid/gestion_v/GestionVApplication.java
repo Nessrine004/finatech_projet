@@ -18,31 +18,28 @@ public class GestionVApplication {
     @Bean
     CommandLineRunner commandLineRunner(AccountService accountService) {
         return args -> {
-            // 🔹 Ajouter les rôles avant toute utilisation
             accountService.addNewRole("ADMIN");
             accountService.addNewRole("MANAGER");
             accountService.addNewRole("TECHNICIEN_INGENIEUR");
 
-            // 🔹 ADMIN
-            if (accountService.loadUserByNom("admin") == null) {
+            if (accountService.loadUserByEmail("admin@example.com") == null) {
                 accountService.addNewUser("admin", "1234", "admin@example.com", "1234");
             }
-            accountService.addRoleToUser("admin", "ADMIN");
-            accountService.removeRoleFromUser("admin", "MANAGER"); // maintenant OK
+            accountService.addRoleToUser("admin@example.com", "ADMIN");
+            accountService.removeRoleFromUser("admin@example.com", "MANAGER");
 
-            // 🔹 MANAGER
-            if (accountService.loadUserByNom("manager") == null) {
+            if (accountService.loadUserByEmail("manager@example.com") == null) {
                 accountService.addNewUser("manager", "1234", "manager@example.com", "1234");
             }
-            accountService.addRoleToUser("manager", "MANAGER");
+            accountService.addRoleToUser("manager@example.com", "MANAGER");
 
-            // 🔹 TECHNICIEN
-            if (accountService.loadUserByNom("tech") == null) {
+            if (accountService.loadUserByEmail("tech@example.com") == null) {
                 accountService.addNewUser("tech", "1234", "tech@example.com", "1234");
             }
-            accountService.addRoleToUser("tech", "TECHNICIEN_INGENIEUR");
+            accountService.addRoleToUser("tech@example.com", "TECHNICIEN_INGENIEUR");
         };
     }
+
 
 
 

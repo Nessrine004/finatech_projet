@@ -56,7 +56,8 @@ public class UtilisateurViewController {
 
         // 3. Ajouter le rôle
         accountService.addNewRole(utilisateur.getRole().name());
-        accountService.addRoleToUser(nom, utilisateur.getRole().name());
+        accountService.addRoleToUser(email, utilisateur.getRole().name());
+
 
         return "redirect:/utilisateurs";
     }
@@ -75,8 +76,15 @@ public class UtilisateurViewController {
     }
 
     @PostMapping("/supprimer-utilisateur/{id}")
-    public String supprimerUtilisateur(@PathVariable Long id) {
-        utilisateurService.deleteUtilisateur(id);
-        return "redirect:/utilisateurs";
+    public String supprimerUtilisateur(@PathVariable Long id, Model model) {
+        try {
+            utilisateurService.deleteUtilisateur(id);
+            return "redirect:/utilisateurs";
+        } catch (RuntimeException e) {
+            model.addAttribute("utilisateurs", utilisateurService.getAllUtilisateurs());
+            model.addAttribute("error", e.getMessage());
+            return "utilisateurs";
+        }
     }
+
 }

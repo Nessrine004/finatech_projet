@@ -1,16 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
   <meta charset="UTF-8">
   <title>Accueil</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      background-image: url('/images/finatech-banner.png');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 38, 70, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .content {
+      text-align: center;
+      z-index: 2;
+    }
+
+    .content h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      animation: fadeInDown 1.5s ease-in-out;
+    }
+
+    .content p {
+      font-size: 1.5em;
+      animation: fadeInUp 2s ease-in-out;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-<div th:replace="fragments/nav-bar :: navbar"></div>
-<h1>Bienvenue sur l'application de gestion des véhicules</h1>
 
-<p>Vous êtes connecté(e) avec succès.</p>
+<!-- Navbar -->
+<div th:replace="fragments/nav-bar :: navbar"></div>
+
+<!-- Section Hero -->
+<section class="hero">
+  <div class="overlay">
+    <div class="content">
+      <h1>Bienvenue sur l'application de gestion des véhicules</h1>
+    </div>
+  </div>
+</section>
 
 </body>
 </html>

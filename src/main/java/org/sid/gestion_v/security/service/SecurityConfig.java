@@ -63,9 +63,6 @@ public class SecurityConfig {
                         .requestMatchers("/cartes-carburant/**", "/ajouter-carte-carburant/**").hasRole("TECHNICIEN_INGENIEUR")
 
 
-
-
-
                         // Toute autre requête nécessite l'authentification
                         .anyRequest().authenticated()
                 )

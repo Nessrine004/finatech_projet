@@ -8,5 +8,6 @@ import java.util.List;
 public interface AffectationRepository extends JpaRepository<Affectation, Long> {
     List<Affectation> findByUtilisateurId(Long utilisateurId);
     List<Affectation> findByVehiculeId(Long vehiculeId);
+
 }
 

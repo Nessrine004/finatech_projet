@@ -32,13 +32,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AppUser addNewUser(String username, String password, String email, String confirmPassword) {
-        AppUser appUser = appUserRepository.findByNom(username);
+        AppUser appUser = appUserRepository.findByEmail(email);
         if (appUser != null) throw new RuntimeException("Cet utilisateur existe déjà.");
         if (!password.equals(confirmPassword)) throw new RuntimeException("Mots de passe incorrects.");
         appUser = AppUser.builder()
                 .userId(UUID.randomUUID().toString())
-                .nom(username) // si tu considères que username = nom
-                .password(passwordEncoder.encode(password)) // ✅ mot de passe encodé ici
+                .nom(username)
+                .password(passwordEncoder.encode(password))
                 .email(email)
                 .build();
         return appUserRepository.save(appUser);
@@ -47,8 +47,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AppRole addNewRole(String role) {
         AppRole existingRole = appRoleRepository.findById(role).orElse(null);
-        if (existingRole != null) return existingRole; // ✅ Retourne le rôle existant
-
+        if (existingRole != null) return existingRole;
         AppRole appRole = AppRole.builder()
                 .role(role)
                 .build();
@@ -58,7 +57,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void addRoleToUser(String username, String role) {
-        AppUser appUser = appUserRepository.findByNom(username);
+        AppUser appUser = appUserRepository.findByEmail(username);
+        if (appUser == null) {
+            throw new RuntimeException("Utilisateur non trouvé avec l'email : " + username);
+        }
+
         AppRole appRole = appRoleRepository.findById(role)
                 .orElseThrow(() -> new RuntimeException("Rôle introuvable"));
 
@@ -68,18 +71,25 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
+
     @Override
     public void removeRoleFromUser(String username, String role) {
-        AppUser appUser = appUserRepository.findByNom(username);
+        AppUser appUser = appUserRepository.findByEmail(username);
+        if (appUser == null) {
+            throw new RuntimeException("Utilisateur non trouvé avec l'email : " + username);
+        }
+
         AppRole appRole = appRoleRepository.findById(role)
                 .orElseThrow(() -> new RuntimeException("Rôle introuvable"));
+
         appUser.getRoles().remove(appRole);
     }
 
 
-    @Override
-    public AppUser loadUserByNom(String nom) {
-        return appUserRepository.findByNom(nom);
+
+    public AppUser loadUserByEmail(String email) {
+        return appUserRepository.findByEmail(email);
     }
+
 
 }
