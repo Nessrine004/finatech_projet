@@ -14,24 +14,27 @@
         <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/affectations}" style="color: #333;">Gérer les Affectations</a></li>
         <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/utilisateurs}" style="color: #333;">Gérer les Utilisateurs</a></li>
         <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/vehicules}" style="color: #333;">Gérer les Véhicules</a></li>
-        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/assurances-readonly}" style="color: #333;">Voir Assurances</a></li>
-        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/entretiens-readonly}" style="color: #333;">Voir Entretiens</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/assurances}" style="color: #333;">Gérer les Assurances</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/pannes}" style="color: #333;">Gérer les pannes</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/visites-techniques}" style="color: #333;">Gérer les visites-techniques</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/cartes-carburant}" style="color: #333;">Gérer les cartes-carburant</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/carburants}" style="color: #333;">Gérer les carburant</a></li>
+
 
         <!-- MANAGER -->
         <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/affectations}" style="color: #333;">Gérer les Affectations</a></li>
         <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/vehicules}" style="color: #333;">Gérer les Véhicules</a></li>
-        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/assurances-readonly}" style="color: #333;">Voir Assurances</a></li>
-        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/entretiens-readonly}" style="color: #333;">Voir Entretiens</a></li>
+        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/assurances}" style="color: #333;">Gérer les Assurances</a></li>
+        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/pannes}" style="color: #333;">Gérer les pannes</a></li>
+        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/visites-techniques}" style="color: #333;">Gérer les visites-techniques</a></li>
+        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/cartes-carburant}" style="color: #333;">Gérer les cartes-carburant</a></li>
+        <li sec:authorize="hasRole('MANAGER')"><a th:href="@{/carburants}" style="color: #333;">Gérer les carburant</a></li>
+
 
         <!-- TECHNICIEN -->
-        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/vehicules-readonly}" style="color: #333;">Voir les Véhicules</a></li>
-        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/affectations-readonly}" style="color: #333;">Voir les Affectations</a></li>
-        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/demande-affectation}" style="color: #333;">Demander une Affectation</a></li>
-        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/assurances}" style="color: #333;">Gérer les Assurances</a></li>
-        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/pannes}" style="color: #333;">Gérer les pannes</a></li>
-        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/visites-techniques}" style="color: #333;">Gérer les visites-techniques</a></li>
-        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/cartes-carburant}" style="color: #333;">Gérer les cartes-carburant</a></li>
-        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/carburants}" style="color: #333;">Gérer les carburant</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/vehicules-readonly}" style="color: #333;">Consulter les Véhicules</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/affectations-readonly}" style="color: #333;">Consulter les Affectations</a></li>
+        <li sec:authorize="hasRole('TECHNICIEN_INGENIEUR')"><a th:href="@{/demande-affectation}" style="color: #333;">Réserver un vehicule</a></li>
 
 
 

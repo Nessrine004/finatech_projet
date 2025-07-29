@@ -44,27 +44,27 @@ public class SecurityConfig {
                                 "/modifierVehicule/**"
                         ).hasRole("ADMIN")
 
-                        // ADMIN + MANAGER : readonly assurances et entretiens
+                        // ADMIN + MANAGER : accès complet aux modules suivants
+                        .requestMatchers(
+                                "/assurances/**", "/pannes/**", "/visites-techniques/**",
+                                "/carburants/**", "/ajouter-carburant/**",
+                                "/cartes-carburant/**", "/ajouter-carte-carburant/**"
+                        ).hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/assurances/save").hasAnyRole("ADMIN", "MANAGER")
+
+                        // ADMIN + MANAGER : readonly si tu veux conserver des vues supplémentaires
                         .requestMatchers(
                                 "/assurances-readonly/**", "/listeEntretien/**"
                         ).hasAnyRole("ADMIN", "MANAGER")
 
-                        // TECHNICIEN_INGENIEUR : accès en lecture seule aux vues readonly et formulaire demande
+                        // TECHNICIEN_INGENIEUR : accès lecture seule véhicules + demande affectation
                         .requestMatchers(
                                 "/vehicules-readonly/**", "/affectations-readonly/**", "/demande-affectation/**"
                         ).hasRole("TECHNICIEN_INGENIEUR")
 
-                        // TECHNICIEN_INGENIEUR : gestion complète des assurances et entretiens
-                        .requestMatchers(
-                                "/assurances/**", "/pannes/**", "/visites-techniques/**"
-                        ).hasRole("TECHNICIEN_INGENIEUR")
-                        .requestMatchers(HttpMethod.POST, "/assurances/save").hasRole("TECHNICIEN_INGENIEUR")
-                        .requestMatchers("/carburants/**", "/ajouter-carburant/**").hasRole("TECHNICIEN_INGENIEUR")
-                        .requestMatchers("/cartes-carburant/**", "/ajouter-carte-carburant/**").hasRole("TECHNICIEN_INGENIEUR")
-
-
                         // Toute autre requête nécessite l'authentification
                         .anyRequest().authenticated()
+
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
