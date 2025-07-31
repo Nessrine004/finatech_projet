@@ -34,6 +34,4 @@ public class Panne {
     @ManyToOne
     private Vehicule vehicule;
 
-    @ManyToOne
-    private Utilisateur effectuePar;
 }

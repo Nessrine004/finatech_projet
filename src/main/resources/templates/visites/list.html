@@ -84,7 +84,6 @@
                 <th>Véhicule</th>
                 <th>Date visite</th>
                 <th>Lieu</th>
-                <th>Effectué par</th>
                 <th>Commentaire</th>
                 <th>Justificatif</th>
                 <th>Actions</th>
@@ -95,7 +94,6 @@
                 <td th:text="${v.vehicule.marque + ' ' + v.vehicule.modele}"></td>
                 <td th:text="${v.dateVisite}"></td>
                 <td th:text="${v.lieu}"></td>
-                <td th:text="${v.effectuePar.prenom + ' ' + v.effectuePar.nom}"></td>
                 <td th:text="${v.commentaire}"></td>
                 <td>
                     <span th:if="${v.justificatif != null}">
@@ -112,7 +110,7 @@
         </table>
 
         <div class="text-center">
-            <a th:href="@{/ajouter-visite-technique}" class="btn">➕ Ajouter une visite technique</a>
+            <a th:href="@{/ajouter-visite-technique}" class="btn"> Ajouter une visite technique</a>
         </div>
     </div>
 </div>

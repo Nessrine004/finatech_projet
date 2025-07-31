@@ -38,7 +38,6 @@ public class VisiteTechniqueServiceImpl implements VisiteTechniqueService {
         existing.setCommentaire(v.getCommentaire());
         existing.setJustificatif(v.getJustificatif());
         existing.setVehicule(v.getVehicule());
-        existing.setEffectuePar(v.getEffectuePar());
         return visiteTechniqueRepository.save(existing);
     }
 

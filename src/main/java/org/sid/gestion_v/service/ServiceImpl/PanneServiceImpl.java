@@ -45,7 +45,6 @@ public class PanneServiceImpl implements PanneService {
         existing.setDateEffectuee(panne.getDateEffectuee());
         existing.setCommentaire(panne.getCommentaire());
         existing.setVehicule(panne.getVehicule());
-        existing.setEffectuePar(panne.getEffectuePar());
         existing.setImage(panne.getImage());
         return panneRepository.save(existing);
     }

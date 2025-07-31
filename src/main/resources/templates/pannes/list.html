@@ -88,7 +88,6 @@
         <th>Montant (DH)</th>
         <th>Date prévue</th>
         <th>Date effectuée</th>
-        <th>Effectué par</th>
         <th>Commentaire</th>
         <th>Justificatif</th>
         <th>Actions</th>
@@ -101,7 +100,6 @@
         <td th:text="${p.montant}"></td>
         <td th:text="${p.datePrevue}"></td>
         <td th:text="${p.dateEffectuee}"></td>
-        <td th:text="${p.effectuePar.prenom + ' ' + p.effectuePar.nom}"></td>
         <td th:text="${p.commentaire}"></td>
         <td>
           <span th:if="${p.image != null}">
@@ -119,7 +117,7 @@
     </table>
 
     <div class="text-center">
-      <a th:href="@{/ajouter-panne}" class="btn">➕ Ajouter une panne</a>
+      <a th:href="@{/ajouter-panne}" class="btn"> Ajouter une panne</a>
     </div>
   </div>
 </div>

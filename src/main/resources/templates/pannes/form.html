@@ -96,12 +96,7 @@
             </option>
         </select>
 
-        <label>Effectué par :</label>
-        <select th:field="*{effectuePar}" required>
-            <option th:each="u : ${utilisateurs}" th:value="${u.id}"
-                    th:text="${u.prenom + ' ' + u.nom}">
-            </option>
-        </select>
+
 
         <label>Justificatif (image) :</label>
         <input type="file" name="imageFile" accept="image/*"/>

@@ -8,6 +8,7 @@ import org.sid.gestion_v.service.VehiculeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -66,9 +67,14 @@ public class AssuranceViewController {
     }
 
     @PostMapping("/assurances/save")
-    public String ajouterAssurance(@ModelAttribute Assurance assurance, Model model) {
+    public String ajouterAssurance(@ModelAttribute Assurance assurance,
+                                   @RequestParam("justificatifFile") MultipartFile justificatifFile,
+                                   Model model) {
         try {
-            assuranceService.save(assurance);  // si assurance.id ≠ null => modification
+            if (!justificatifFile.isEmpty()) {
+                assurance.setJustificatif(justificatifFile.getBytes());
+            }
+            assuranceService.save(assurance);  // Création ou modification
             return "redirect:/assurances";
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,6 +84,13 @@ public class AssuranceViewController {
             return "assurance/form";
         }
     }
+
+    @GetMapping(value = "/assurances/justificatif/{id}", produces = "image/jpeg")
+    @ResponseBody
+    public byte[] afficherJustificatif(@PathVariable Long id) {
+        return assuranceService.getAssuranceById(id).getJustificatif();
+    }
+
 
 
 }

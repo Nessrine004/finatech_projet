@@ -22,9 +22,6 @@ public class AffectationServiceImpl implements AffectationService {
     private final EmailService emailService;
     private final UtilisateurService utilisateurService;
 
-
-
-
     @Override
     public List<Affectation> getAllAffectations() {
         return affectationRepository.findAll();

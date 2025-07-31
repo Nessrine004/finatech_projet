@@ -10,7 +10,7 @@
 <div th:replace="fragments/nav-bar :: navbar"></div>
 <h2>Ajouter un véhicule</h2>
 
-<form th:action="@{/ajouter-vehicule}" th:object="${vehicule}" method="post">
+<form th:action="@{/ajouter-vehicule}" th:object="${vehicule}" method="post" enctype="multipart/form-data">
     <label>Marque:</label>
     <input type="text" th:field="*{marque}" required><br>
 
@@ -29,7 +29,37 @@
                 th:value="${s}"
                 th:text="${s.label}">
         </option>
-    </select>
+    </select><br>
+
+    <label>Type de véhicule:</label>
+    <select th:field="*{typeVehicule}">
+        <option th:each="type : ${T(org.sid.gestion_v.entities.TypeVehicule).values()}"
+                th:value="${type}" th:text="${type}">Type</option>
+    </select><br>
+
+    <label>Type de carburant:</label>
+    <select th:field="*{typeCarburant}">
+        <option th:each="carb : ${T(org.sid.gestion_v.entities.TypeCarburant).values()}"
+                th:value="${carb}" th:text="${carb}">Carburant</option>
+    </select><br>
+
+    <label>Date début location:</label>
+    <input type="date" th:field="*{dateDebutLocation}" /><br>
+
+    <label>Date fin location:</label>
+    <input type="date" th:field="*{dateFinLocation}" /><br>
+
+    <label>Carte Grise:</label>
+    <input type="file" name="carteGrise" /><br>
+
+    <label>Assurance:</label>
+    <input type="file" name="assuranceDoc" /><br>
+
+    <label>Vignette:</label>
+    <input type="file" name="vignette" /><br>
+
+    <label>Visite Technique:</label>
+    <input type="file" name="visiteTechnique" /><br>
 
     <button type="submit">Ajouter</button>
 </form>

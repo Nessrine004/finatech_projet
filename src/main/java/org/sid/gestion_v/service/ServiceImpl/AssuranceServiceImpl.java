@@ -41,6 +41,7 @@ public class AssuranceServiceImpl implements AssuranceService {
         existing.setDateDebut(a.getDateDebut());
         existing.setDateFin(a.getDateFin());
         existing.setCompagnie(a.getCompagnie());
+        existing.setJustificatif(a.getJustificatif());
         existing.setVehicule(a.getVehicule());
         return assuranceRepository.save(existing);
     }
@@ -62,44 +63,7 @@ public class AssuranceServiceImpl implements AssuranceService {
         assuranceRepository.deleteById(id);
     }
 
-    // 📩 Rappel automatique
-    @Scheduled(cron = "0 10 8 * * *") // tous les jours à 8h10
-    public void envoyerRappelsAssurance() {
-        LocalDate dans2Jours = LocalDate.now().plusDays(2);
-        List<Assurance> assurances = assuranceRepository.findByDateFin(dans2Jours);
 
-        for (Assurance a : assurances) {
-            Utilisateur u = a.getEffectuePar();
-            if (u != null && u.getEmail() != null) {
-                String to = u.getEmail();
-                String subject = "🔔 Rappel : Fin d’assurance dans 2 jours";
 
-                String html = """
-                <html>
-                    <body>
-                        <p>Bonjour <strong>%s %s</strong>,</p>
-                        <p>La police d’assurance suivante arrive à expiration dans 2 jours :</p>
-                        <ul>
-                            <li><strong>Compagnie :</strong> %s</li>
-                            <li><strong>Véhicule :</strong> %s %s (%s)</li>
-                            <li><strong>Date de fin :</strong> %s</li>
-                        </ul>
-                        <p>Merci de procéder au renouvellement.</p>
-                        <p style="color:gray;">– Application Gestion des Véhicules</p>
-                    </body>
-                </html>
-            """.formatted(
-                        u.getPrenom(), u.getNom(),
-                        a.getCompagnie(),
-                        a.getVehicule().getMarque(),
-                        a.getVehicule().getModele(),
-                        a.getVehicule().getPlaqueImmatriculation(),
-                        a.getDateFin()
-                );
 
-                emailService.sendHtmlEmail(to, subject, html);
-                System.out.println("📧 Rappel assurance envoyé à " + to);
-            }
-        }
-    }
 }

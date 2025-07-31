@@ -61,7 +61,7 @@
 
 <div class="form-container">
 
-    <form th:action="@{/assurances/save}" th:object="${assurance}" method="post">
+    <form th:action="@{/assurances/save}" th:object="${assurance}" method="post" enctype="multipart/form-data">
         <!-- CSRF token -->
         <input type="hidden" th:csrf="true"/>
 
@@ -92,19 +92,15 @@
             </option>
         </select>
 
-        <label>Effectué par :</label>
-        <select th:field="*{effectuePar}" required>
-            <option th:each="u : ${utilisateurs}"
-                    th:value="${u.id}"
-                    th:text="${u.prenom + ' ' + u.nom}">
-            </option>
-        </select>
+
+        <label>Justificatif (image ou PDF) :</label>
+        <input type="file" name="justificatifFile" accept="image/*,.pdf"/>
 
         <button type="submit">Enregistrer</button>
     </form>
 
     <div style="text-align: center;">
-        <a th:href="@{/assurances}">⬅ Retour à la liste</a>
+        <a th:href="@{/assurances}"> Retour à la liste</a>
     </div>
 </div>
 

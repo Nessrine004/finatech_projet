@@ -10,20 +10,20 @@
 <div th:replace="fragments/nav-bar :: navbar"></div>
 <h2>Modifier un véhicule</h2>
 
-<form th:action="@{/modifier-vehicule}" th:object="${vehicule}" method="post">
+<form th:action="@{/modifier-vehicule}" th:object="${vehicule}" method="post" enctype="multipart/form-data">
     <input type="hidden" th:field="*{id}" />
 
     <label>Marque :</label>
-    <input type="text" th:field="*{marque}" /><br/>
+    <input type="text" th:field="*{marque}" required/><br/>
 
     <label>Modèle :</label>
-    <input type="text" th:field="*{modele}" /><br/>
+    <input type="text" th:field="*{modele}" required/><br/>
 
-    <label>Plaque :</label>
-    <input type="text" th:field="*{plaqueImmatriculation}" /><br/>
+    <label>Plaque d'immatriculation :</label>
+    <input type="text" th:field="*{plaqueImmatriculation}" required/><br/>
 
     <label>Kilométrage :</label>
-    <input type="number" th:field="*{kilometrage}" /><br/>
+    <input type="number" th:field="*{kilometrage}" required/><br/>
 
     <label>Statut :</label>
     <select th:field="*{statut}">
@@ -32,6 +32,40 @@
                 th:text="${s.label}">
         </option>
     </select><br/><br/>
+
+    <label>Type de véhicule :</label>
+    <select th:field="*{typeVehicule}">
+        <option value="LEGER">Léger</option>
+        <option value="POIDS_LOURD">Poids lourd</option>
+        <option value="UTILITAIRE">Utilitaire</option>
+    </select><br/>
+
+    <label>Type de carburant :</label>
+    <select th:field="*{typeCarburant}">
+        <option value="ESSENCE">Essence</option>
+        <option value="DIESEL">Diesel</option>
+        <option value="ELECTRIQUE">Électrique</option>
+        <option value="HYBRIDE">Hybride</option>
+    </select><br/>
+
+    <label>Date de début de location :</label>
+    <input type="date" th:field="*{dateDebutLocation}" /><br/>
+
+    <label>Date de fin de location :</label>
+    <input type="date" th:field="*{dateFinLocation}" /><br/>
+
+    <!-- 🔧 Champs de fichiers avec les bons noms pour correspondre à @RequestParam -->
+    <label>Carte grise :</label>
+    <input type="file" name="carteGriseFile" /><br/>
+
+    <label>Assurance :</label>
+    <input type="file" name="assuranceFile" /><br/>
+
+    <label>Vignette :</label>
+    <input type="file" name="vignetteFile" /><br/>
+
+    <label>Visite technique :</label>
+    <input type="file" name="visiteTechniqueFile" /><br/><br/>
 
     <button type="submit">Enregistrer les modifications</button>
 </form>

@@ -1,4 +1,5 @@
 package org.sid.gestion_v.entities;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,8 @@ import java.util.List;
 @ToString(exclude = {"pannes", "assurances", "affectations", "reservations"})
 public class Vehicule {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String marque;
@@ -24,6 +26,25 @@ public class Vehicule {
 
     @Enumerated(EnumType.STRING)
     private StatutVehicule statut;
+
+    private String typeCarburant;
+
+    private String typeVehicule;
+
+    private String dateDebutLocation;
+    private String dateFinLocation;
+
+    @Lob
+    private byte[] carteGrise;
+
+    @Lob
+    private byte[] assuranceDocument;
+
+    @Lob
+    private byte[] vignette;
+
+    @Lob
+    private byte[] visiteTechnique;
 
     @OneToMany(mappedBy = "vehicule")
     private List<Affectation> affectations;
@@ -37,4 +58,3 @@ public class Vehicule {
     @OneToMany(mappedBy = "vehicule")
     private List<Reservation> reservations;
 }
-

@@ -76,10 +76,7 @@
             <option th:each="v : ${vehicules}" th:value="${v.id}" th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}"></option>
         </select>
 
-        <label>Effectué par :</label>
-        <select th:field="*{effectuePar}" required>
-            <option th:each="u : ${utilisateurs}" th:value="${u.id}" th:text="${u.prenom + ' ' + u.nom}"></option>
-        </select>
+
 
         <label>Justificatif (image ou PDF) :</label>
         <input type="file" name="justificatifFile" accept="image/*,.pdf"/>
@@ -88,7 +85,7 @@
     </form>
 
     <div style="text-align: center;">
-        <a th:href="@{/visites-techniques}">⬅ Retour à la liste</a>
+        <a th:href="@{/visites-techniques}"> Retour à la liste</a>
     </div>
 </div>
 

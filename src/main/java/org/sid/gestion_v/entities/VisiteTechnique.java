@@ -29,6 +29,5 @@ public class VisiteTechnique {
     @ManyToOne
     private Vehicule vehicule;
 
-    @ManyToOne
-    private Utilisateur effectuePar;
+
 }

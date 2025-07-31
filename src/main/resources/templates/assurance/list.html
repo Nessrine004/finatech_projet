@@ -88,8 +88,9 @@
                 <th>Usage</th>
                 <th>Propriétaire</th>
                 <th>Adresse</th>
-                <th>Responsable</th>
                 <th>Actions</th>
+                <th>Justificatif</th>
+
             </tr>
             </thead>
             <tbody>
@@ -101,7 +102,12 @@
                 <td th:text="${a.usage}"></td>
                 <td th:text="${a.proprietaire}"></td>
                 <td th:text="${a.adresse}"></td>
-                <td th:text="${a.effectuePar.prenom + ' ' + a.effectuePar.nom}"></td>
+                <td>
+                    <span th:if="${a.justificatif != null}">
+                        <a th:href="@{'/assurances/justificatif/' + ${a.id}}" target="_blank" class="btn"> Voir</a>
+                    </span>
+                    <span th:if="${a.justificatif == null}">—</span>
+                </td>
                 <td class="actions">
                     <a th:href="@{'/modifier-assurance/' + ${a.id}}" class="btn">Modifier</a>
                     <form th:action="@{'/supprimer-assurance/' + ${a.id}}" method="post" style="display:inline;">

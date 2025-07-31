@@ -7,13 +7,15 @@
     <title>Liste des Véhicules</title>
 </head>
 <body>
+
 <div th:replace="fragments/nav-bar :: navbar"></div>
+
 <h2>Liste des véhicules</h2>
+
 <!-- Message d’erreur si présent -->
 <div th:if="${errorMessage}" style="color: red; font-weight: bold; margin-bottom: 15px;">
     <p th:text="${errorMessage}"></p>
 </div>
-
 
 <!-- Bouton pour ajouter un nouveau véhicule -->
 <a th:href="@{/ajouter-vehicule}">
@@ -23,17 +25,41 @@
 <!-- Liste des véhicules -->
 <ul>
     <li th:each="v : ${vehicules}">
-        <strong th:text="${v.marque + ' ' + v.modele}"></strong><br>
-        Immatriculation : <span th:text="${v.plaqueImmatriculation}"></span><br>
-        Kilométrage : <span th:text="${v.kilometrage} + ' km'"></span><br>
-        Statut : <span th:text="${v.statut.label}"></span><br>
+        <strong th:text="${v.marque + ' ' + v.modele}">Marque Modèle</strong><br>
+        Immatriculation : <span th:text="${v.plaqueImmatriculation}">0000-XX-00</span><br>
+        Kilométrage : <span th:text="${v.kilometrage + ' km'}">0 km</span><br>
+        Statut : <span th:text="${v.statut}">DISPONIBLE</span><br>
+        Type véhicule : <span th:text="${v.typeVehicule}">SUV</span><br>
+        Type carburant : <span th:text="${v.typeCarburant}">Diesel</span><br>
+        Début location : <span th:text="${v.dateDebutLocation}">01/01/2024</span><br>
+        Fin location : <span th:text="${v.dateFinLocation}">31/12/2024</span><br>
 
-        <!-- Bouton Modifier -->
+        <!-- Justificatifs -->
+        Carte grise :
+        <a th:if="${v.carteGrise != null}"
+           th:href="@{'/vehicules/' + ${v.id} + '/carte-grise'}"
+           target="_blank">Voir</a><br>
+
+        Assurance :
+        <a th:if="${v.assuranceDocument != null}"
+           th:href="@{'/vehicules/' + ${v.id} + '/assurance'}"
+           target="_blank">Voir</a><br>
+
+        Vignette :
+        <a th:if="${v.vignette != null}"
+           th:href="@{'/vehicules/' + ${v.id} + '/vignette'}"
+           target="_blank">Voir</a><br>
+
+        Visite technique :
+        <a th:if="${v.visiteTechnique != null}"
+           th:href="@{'/vehicules/' + ${v.id} + '/visite-technique'}"
+           target="_blank">Voir</a><br>
+
+        <!-- Boutons -->
         <a th:href="@{'/modifier-vehicule/' + ${v.id}}">
             <button>Modifier</button>
         </a>
 
-        <!-- Bouton Supprimer -->
         <form th:action="@{'/supprimer-vehicule/' + ${v.id}}" method="post" style="display:inline;">
             <button type="submit" onclick="return confirm('Voulez-vous vraiment supprimer ce véhicule ?')">Supprimer</button>
         </form>
@@ -41,5 +67,6 @@
         <br><br>
     </li>
 </ul>
+
 </body>
 </html>
