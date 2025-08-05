@@ -41,7 +41,10 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/affectation.html", "/ajouterAffectation/**", "/ajouterUtilisateur/**",
                                 "/ajouterVehicule/**", "/modifierAffectation/**", "/modifierUtilisateur/**",
-                                "/modifierVehicule/**"
+                                "/modifierVehicule/**",
+
+                                // 👇 Accès restreint au module Employe
+                                "/employes/**", "/ajouter-employe/**", "/modifier-employe/**", "/supprimer-employe/**"
                         ).hasRole("ADMIN")
 
                         // ADMIN + MANAGER : accès complet aux modules suivants
@@ -64,7 +67,6 @@ public class SecurityConfig {
 
                         // Toute autre requête nécessite l'authentification
                         .anyRequest().authenticated()
-
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -74,4 +76,5 @@ public class SecurityConfig {
                 .logout(logout -> logout.permitAll())
                 .build();
     }
+
 }

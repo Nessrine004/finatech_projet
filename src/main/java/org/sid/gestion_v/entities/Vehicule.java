@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -16,13 +17,15 @@ import java.util.List;
 public class Vehicule {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String marque;
     private String modele;
     private String plaqueImmatriculation;
-    private Double kilometrage;
+
+    @Column(name = "validite")
+    private LocalDate validite;
 
     @Enumerated(EnumType.STRING)
     private StatutVehicule statut;
@@ -33,18 +36,6 @@ public class Vehicule {
 
     private String dateDebutLocation;
     private String dateFinLocation;
-
-    @Lob
-    private byte[] carteGrise;
-
-    @Lob
-    private byte[] assuranceDocument;
-
-    @Lob
-    private byte[] vignette;
-
-    @Lob
-    private byte[] visiteTechnique;
 
     @OneToMany(mappedBy = "vehicule")
     private List<Affectation> affectations;

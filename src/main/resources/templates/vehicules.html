@@ -1,72 +1,166 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Liste des Véhicules</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-content {
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .search-bar {
+            width: 50%;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .table-container {
+            max-width: 95%;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #e9eef5;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            background-color: #0069d1;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn-secondary {
+            background-color: #cccccc;
+            color: #333;
+        }
+
+        .actions a {
+            margin-right: 6px;
+        }
+
+        .text-center {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
 <div th:replace="fragments/nav-bar :: navbar"></div>
 
-<h2>Liste des véhicules</h2>
+<div class="page-content">
+    <h2>Liste des Véhicules</h2>
 
-<!-- Message d’erreur si présent -->
-<div th:if="${errorMessage}" style="color: red; font-weight: bold; margin-bottom: 15px;">
-    <p th:text="${errorMessage}"></p>
+    <!-- ✅ Barre de recherche -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔍 Rechercher un véhicule...">
+    </div>
+
+    <!-- ✅ Tableau filtrable -->
+    <div class="table-container">
+        <table id="vehiculesTable">
+            <thead>
+            <tr>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Immatriculation</th>
+                <th>Validité</th>
+                <th>Statut</th>
+                <th>Type</th>
+                <th>Carburant</th>
+                <th>Début location</th>
+                <th>Fin location</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="v : ${vehicules}">
+                <td th:text="${v.marque}">Marque</td>
+                <td th:text="${v.modele}">Modèle</td>
+                <td th:text="${v.plaqueImmatriculation}">0000-XX-00</td>
+                <td th:text="${v.validite}">2025-08-01</td>
+                <td th:text="${v.statut}">DISPONIBLE</td>
+                <td th:text="${v.typeVehicule}">SUV</td>
+                <td th:text="${v.typeCarburant}">Diesel</td>
+                <td th:text="${v.dateDebutLocation}">2024-01-01</td>
+                <td th:text="${v.dateFinLocation}">2024-12-31</td>
+                <td class="actions">
+                    <a th:href="@{'/modifier-vehicule/' + ${v.id}}" class="btn">Modifier</a>
+                    <form th:action="@{'/supprimer-vehicule/' + ${v.id}}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Supprimer ce véhicule ?')" class="btn btn-secondary">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <a th:href="@{/ajouter-vehicule}" class="btn">Ajouter un véhicule</a>
+        </div>
+    </div>
 </div>
 
-<!-- Bouton pour ajouter un nouveau véhicule -->
-<a th:href="@{/ajouter-vehicule}">
-    <button>Ajouter un véhicule</button>
-</a>
+<!-- ✅ JavaScript de filtrage -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("searchInput");
+        const table = document.getElementById("vehiculesTable");
+        const rows = table.getElementsByTagName("tr");
 
-<!-- Liste des véhicules -->
-<ul>
-    <li th:each="v : ${vehicules}">
-        <strong th:text="${v.marque + ' ' + v.modele}">Marque Modèle</strong><br>
-        Immatriculation : <span th:text="${v.plaqueImmatriculation}">0000-XX-00</span><br>
-        Kilométrage : <span th:text="${v.kilometrage + ' km'}">0 km</span><br>
-        Statut : <span th:text="${v.statut}">DISPONIBLE</span><br>
-        Type véhicule : <span th:text="${v.typeVehicule}">SUV</span><br>
-        Type carburant : <span th:text="${v.typeCarburant}">Diesel</span><br>
-        Début location : <span th:text="${v.dateDebutLocation}">01/01/2024</span><br>
-        Fin location : <span th:text="${v.dateFinLocation}">31/12/2024</span><br>
+        searchInput.addEventListener("keyup", function () {
+            const filter = searchInput.value.toLowerCase();
 
-        <!-- Justificatifs -->
-        Carte grise :
-        <a th:if="${v.carteGrise != null}"
-           th:href="@{'/vehicules/' + ${v.id} + '/carte-grise'}"
-           target="_blank">Voir</a><br>
-
-        Assurance :
-        <a th:if="${v.assuranceDocument != null}"
-           th:href="@{'/vehicules/' + ${v.id} + '/assurance'}"
-           target="_blank">Voir</a><br>
-
-        Vignette :
-        <a th:if="${v.vignette != null}"
-           th:href="@{'/vehicules/' + ${v.id} + '/vignette'}"
-           target="_blank">Voir</a><br>
-
-        Visite technique :
-        <a th:if="${v.visiteTechnique != null}"
-           th:href="@{'/vehicules/' + ${v.id} + '/visite-technique'}"
-           target="_blank">Voir</a><br>
-
-        <!-- Boutons -->
-        <a th:href="@{'/modifier-vehicule/' + ${v.id}}">
-            <button>Modifier</button>
-        </a>
-
-        <form th:action="@{'/supprimer-vehicule/' + ${v.id}}" method="post" style="display:inline;">
-            <button type="submit" onclick="return confirm('Voulez-vous vraiment supprimer ce véhicule ?')">Supprimer</button>
-        </form>
-
-        <br><br>
-    </li>
-</ul>
+            for (let i = 1; i < rows.length; i++) { // i = 1 to skip header
+                let rowText = rows[i].textContent.toLowerCase();
+                rows[i].style.display = rowText.includes(filter) ? "" : "none";
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

@@ -2,22 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ajouter un véhicule</title>
+    <title th:text="${employe.id != null} ? 'Modifier un employé' : 'Ajouter un employé'">Formulaire Employé</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
         .form-container {
             background-color: #e9eef5;
             padding: 30px;
             border-radius: 10px;
             max-width: 600px;
-            margin: auto;
+            margin: 30px auto;
         }
+
         .form-container label {
             display: block;
             margin-top: 15px;
             font-weight: bold;
         }
+
         .form-container input[type="text"],
-        .form-container input[type="date"],
+        .form-container input[type="file"],
         .form-container select {
             width: 100%;
             padding: 10px;
@@ -26,6 +35,7 @@
             border-radius: 8px;
             background-color: white;
         }
+
         .form-container button[type="submit"] {
             background-color: #0092d1;
             color: white;
@@ -36,15 +46,18 @@
             margin-top: 20px;
             cursor: pointer;
         }
+
         .form-container a {
             display: inline-block;
             margin-top: 20px;
             color: #0099d1;
             text-decoration: underline;
         }
+
         h2 {
             text-align: center;
             color: #333;
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -52,48 +65,34 @@
 
 <div th:replace="fragments/nav-bar :: navbar"></div>
 
-<h2>Ajouter un véhicule</h2>
+<h2 th:text="${employe.id != null} ? 'Modifier un employé' : 'Ajouter un employé'"></h2>
 
 <div class="form-container">
-    <form th:action="@{/ajouter-vehicule}" method="post" th:object="${vehicule}">
-        <label>Marque :</label>
-        <input type="text" th:field="*{marque}" required />
+    <form th:action="@{/employes/save}" th:object="${employe}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{id}" />
 
-        <label>Modèle :</label>
-        <input type="text" th:field="*{modele}" required />
+        <label>Nom :</label>
+        <input type="text" th:field="*{nom}" required />
 
-        <label>Plaque d'immatriculation :</label>
-        <input type="text" th:field="*{plaqueImmatriculation}" required />
+        <label>Prénom :</label>
+        <input type="text" th:field="*{prenom}" required />
 
-        <label>Validité :</label>
-        <input type="date" th:field="*{validite}" required />
-
-        <label>Statut :</label>
-        <select th:field="*{statut}">
-            <option th:each="statut : ${statuts}" th:value="${statut}" th:text="${statut}"></option>
+        <label>Poste :</label>
+        <select th:field="*{poste}">
+            <option th:each="poste : ${postes}" th:value="${poste}" th:text="${poste}">Poste</option>
         </select>
 
-        <label>Type de carburant :</label>
-        <select th:field="*{typeCarburant}">
-            <option th:each="carburant : ${typesCarburant}" th:value="${carburant}" th:text="${carburant}"></option>
-        </select>
+        <label>Téléphone :</label>
+        <input type="text" th:field="*{numeroTelephone}" required />
 
-        <label>Type de véhicule :</label>
-        <select th:field="*{typeVehicule}">
-            <option th:each="type : ${typesVehicule}" th:value="${type}" th:text="${type}"></option>
-        </select>
-
-        <label>Date début de location :</label>
-        <input type="date" th:field="*{dateDebutLocation}" />
-
-        <label>Date fin de location :</label>
-        <input type="date" th:field="*{dateFinLocation}" />
+        <label for="cinFile">Insérer CIN :</label>
+        <input type="file" id="cinFile" name="cinFile" class="form-control" />
 
         <button type="submit">Enregistrer</button>
     </form>
 
     <div style="text-align: center;">
-        <a th:href="@{/vehicules}">Retour à la liste</a>
+        <a th:href="@{/employes}">Retour à la liste</a>
     </div>
 </div>
 

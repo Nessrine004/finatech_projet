@@ -35,12 +35,8 @@ public class VehiculeViewController {
     }
 
     @PostMapping("/ajouter-vehicule")
-    public String ajouterVehicule(@ModelAttribute Vehicule vehicule,
-                                  @RequestParam("carteGriseFile") MultipartFile carteGriseFile,
-                                  @RequestParam("assuranceFile") MultipartFile assuranceFile,
-                                  @RequestParam("vignetteFile") MultipartFile vignetteFile,
-                                  @RequestParam("visiteTechniqueFile") MultipartFile visiteTechniqueFile) throws IOException {
-        vehiculeService.createVehicule(vehicule, carteGriseFile, assuranceFile, vignetteFile, visiteTechniqueFile);
+    public String ajouterVehicule(@ModelAttribute Vehicule vehicule){
+        vehiculeService.createVehicule(vehicule);
         return "redirect:/vehicules";
     }
 
@@ -55,12 +51,8 @@ public class VehiculeViewController {
     }
 
     @PostMapping("/modifier-vehicule")
-    public String modifierVehicule(@ModelAttribute Vehicule vehicule,
-                                   @RequestParam(value = "carteGriseFile", required = false) MultipartFile carteGriseFile,
-                                   @RequestParam(value = "assuranceFile", required = false) MultipartFile assuranceFile,
-                                   @RequestParam(value = "vignetteFile", required = false) MultipartFile vignetteFile,
-                                   @RequestParam(value = "visiteTechniqueFile", required = false) MultipartFile visiteTechniqueFile) throws IOException {
-        vehiculeService.updateVehicule(vehicule.getId(), vehicule, carteGriseFile, assuranceFile, vignetteFile, visiteTechniqueFile);
+    public String modifierVehicule(@ModelAttribute Vehicule vehicule) {
+        vehiculeService.updateVehicule(vehicule.getId(), vehicule);
         return "redirect:/vehicules";
     }
 

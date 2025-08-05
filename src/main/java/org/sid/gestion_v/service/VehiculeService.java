@@ -10,26 +10,8 @@ public interface VehiculeService {
     List<Vehicule> getAllVehicules();
     Vehicule getVehiculeById(Long id);
 
-    Vehicule createVehicule(Vehicule vehicule,
-                            MultipartFile carteGrise,
-                            MultipartFile assurance,
-                            MultipartFile vignette,
-                            MultipartFile visiteTechnique);
-
-    Vehicule updateVehicule(Long id, Vehicule vehicule,
-                            MultipartFile carteGriseFile,
-                            MultipartFile assuranceFile,
-                            MultipartFile vignetteFile,
-                            MultipartFile visiteTechniqueFile) throws IOException;
-
+    Vehicule createVehicule(Vehicule vehicule);
     Vehicule updateVehicule(Long id, Vehicule vehicule);
 
     void deleteVehicule(Long id);
-
-    // Nouvelle méthode pour appeler les upload un par un
-    void enregistrerDocumentsVehicule(Vehicule vehicule,
-                                      MultipartFile carteGrise,
-                                      MultipartFile assurance,
-                                      MultipartFile vignette,
-                                      MultipartFile visiteTechnique);
 }

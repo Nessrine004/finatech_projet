@@ -1,74 +1,103 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Modifier un véhicule</title>
+    <style>
+        .form-container {
+            background-color: #e9eef5;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+        .form-container label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="date"],
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+        }
+        .form-container button[type="submit"] {
+            background-color: #0092d1;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .form-container a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0099d1;
+            text-decoration: underline;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
+
 <div th:replace="fragments/nav-bar :: navbar"></div>
+
 <h2>Modifier un véhicule</h2>
 
-<form th:action="@{/modifier-vehicule}" th:object="${vehicule}" method="post" enctype="multipart/form-data">
-    <input type="hidden" th:field="*{id}" />
+<div class="form-container">
+    <form th:action="@{/modifier-vehicule}" method="post" th:object="${vehicule}">
+        <input type="hidden" th:field="*{id}" />
 
-    <label>Marque :</label>
-    <input type="text" th:field="*{marque}" required/><br/>
+        <label>Marque :</label>
+        <input type="text" th:field="*{marque}" required />
 
-    <label>Modèle :</label>
-    <input type="text" th:field="*{modele}" required/><br/>
+        <label>Modèle :</label>
+        <input type="text" th:field="*{modele}" required />
 
-    <label>Plaque d'immatriculation :</label>
-    <input type="text" th:field="*{plaqueImmatriculation}" required/><br/>
+        <label>Plaque d'immatriculation :</label>
+        <input type="text" th:field="*{plaqueImmatriculation}" required />
 
-    <label>Kilométrage :</label>
-    <input type="number" th:field="*{kilometrage}" required/><br/>
+        <label>Validité :</label>
+        <input type="date" th:field="*{validite}" required />
 
-    <label>Statut :</label>
-    <select th:field="*{statut}">
-        <option th:each="s : ${statuts}"
-                th:value="${s}"
-                th:text="${s.label}">
-        </option>
-    </select><br/><br/>
+        <label>Statut :</label>
+        <select th:field="*{statut}">
+            <option th:each="statut : ${statuts}" th:value="${statut}" th:text="${statut}"></option>
+        </select>
 
-    <label>Type de véhicule :</label>
-    <select th:field="*{typeVehicule}">
-        <option value="LEGER">Léger</option>
-        <option value="POIDS_LOURD">Poids lourd</option>
-        <option value="UTILITAIRE">Utilitaire</option>
-    </select><br/>
+        <label>Type de carburant :</label>
+        <select th:field="*{typeCarburant}">
+            <option th:each="carburant : ${typesCarburant}" th:value="${carburant}" th:text="${carburant}"></option>
+        </select>
 
-    <label>Type de carburant :</label>
-    <select th:field="*{typeCarburant}">
-        <option value="ESSENCE">Essence</option>
-        <option value="DIESEL">Diesel</option>
-        <option value="ELECTRIQUE">Électrique</option>
-        <option value="HYBRIDE">Hybride</option>
-    </select><br/>
+        <label>Type de véhicule :</label>
+        <select th:field="*{typeVehicule}">
+            <option th:each="type : ${typesVehicule}" th:value="${type}" th:text="${type}"></option>
+        </select>
 
-    <label>Date de début de location :</label>
-    <input type="date" th:field="*{dateDebutLocation}" /><br/>
+        <label>Date début de location :</label>
+        <input type="date" th:field="*{dateDebutLocation}" />
 
-    <label>Date de fin de location :</label>
-    <input type="date" th:field="*{dateFinLocation}" /><br/>
+        <label>Date fin de location :</label>
+        <input type="date" th:field="*{dateFinLocation}" />
 
-    <!-- 🔧 Champs de fichiers avec les bons noms pour correspondre à @RequestParam -->
-    <label>Carte grise :</label>
-    <input type="file" name="carteGriseFile" /><br/>
+        <button type="submit">Mettre à jour</button>
+    </form>
 
-    <label>Assurance :</label>
-    <input type="file" name="assuranceFile" /><br/>
-
-    <label>Vignette :</label>
-    <input type="file" name="vignetteFile" /><br/>
-
-    <label>Visite technique :</label>
-    <input type="file" name="visiteTechniqueFile" /><br/><br/>
-
-    <button type="submit">Enregistrer les modifications</button>
-</form>
+    <div style="text-align: center;">
+        <a th:href="@{/vehicules}">Retour à la liste</a>
+    </div>
+</div>
 
 </body>
 </html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Employés</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-content {
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .search-bar {
+            width: 50%;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .table-container {
+            max-width: 95%;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #e9eef5;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            background-color: #0069d1;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn-secondary {
+            background-color: #cccccc;
+            color: #333;
+        }
+
+        .actions a {
+            margin-right: 6px;
+        }
+
+        .text-center {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/nav-bar :: navbar"></div>
+
+<div class="page-content">
+    <h2>Liste des Employés</h2>
+
+    <div class="table-container">
+        <table id="employesTable">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Poste</th>
+                <th>Téléphone</th>
+                <th>CIN</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employe : ${employes}">
+                <td th:text="${employe.nom}">Nom</td>
+                <td th:text="${employe.prenom}">Prénom</td>
+                <td th:text="${employe.poste}">Poste</td>
+                <td th:text="${employe.numeroTelephone}">Téléphone</td>
+                <td>
+                    <span th:if="${employe.CIN != null}">
+                        <a th:href="@{'/employes/cin/' + ${employe.id}}" target="_blank" class="btn">Voir</a>
+                    </span>
+                    <span th:if="${employe.CIN == null}">—</span>
+                </td>
+                <td class="actions">
+                    <a th:href="@{/employes/modifier/{id}(id=${employe.id})}" class="btn">Modifier</a>
+                    <a th:href="@{/employes/supprimer/{id}(id=${employe.id})}" class="btn btn-secondary"
+                       onclick="return confirm('Supprimer cet employé ?')">Supprimer</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <a th:href="@{/employes/ajouter}" class="btn">Ajouter un employé</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
