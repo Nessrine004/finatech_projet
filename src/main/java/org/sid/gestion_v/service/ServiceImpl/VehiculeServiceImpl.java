@@ -1,13 +1,17 @@
 package org.sid.gestion_v.service.ServiceImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.sid.gestion_v.entities.Affectation;
+import org.sid.gestion_v.entities.StatutVehicule;
 import org.sid.gestion_v.entities.Vehicule;
+import org.sid.gestion_v.repository.AffectationRepository;
 import org.sid.gestion_v.repository.VehiculeRepository;
 import org.sid.gestion_v.service.VehiculeService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -15,6 +19,8 @@ import java.util.List;
 public class VehiculeServiceImpl implements VehiculeService {
 
     private final VehiculeRepository vehiculeRepository;
+    private final AffectationRepository affectationRepository;
+
 
     @Override
     public List<Vehicule> getAllVehicules() {
@@ -40,7 +46,6 @@ public class VehiculeServiceImpl implements VehiculeService {
         existing.setModele(vehicule.getModele());
         existing.setPlaqueImmatriculation(vehicule.getPlaqueImmatriculation());
         existing.setValidite(vehicule.getValidite());
-        existing.setStatut(vehicule.getStatut());
         existing.setTypeCarburant(vehicule.getTypeCarburant());
         existing.setTypeVehicule(vehicule.getTypeVehicule());
         existing.setDateDebutLocation(vehicule.getDateDebutLocation());
@@ -55,5 +60,24 @@ public class VehiculeServiceImpl implements VehiculeService {
             throw new RuntimeException("Vous ne pouvez pas supprimer ce véhicule car il est encore affecté.");
         }
         vehiculeRepository.delete(v);
+    }
+    @Override
+    public List<Vehicule> getVehiculesDisponibles(LocalDate dateDebut, LocalDate dateFin) {
+        List<Vehicule> tousLesVehicules = vehiculeRepository.findAll();
+
+        return tousLesVehicules.stream().filter(vehicule -> {
+            List<Affectation> affectations = affectationRepository.findByVehiculeId(vehicule.getId());
+
+            for (Affectation a : affectations) {
+                boolean chevauchement = !(dateFin.isBefore(a.getDateDebut()) || dateDebut.isAfter(a.getDateFin()));
+                if (chevauchement) return false;
+            }
+
+            return true;
+        }).toList();
+    }
+    @Override
+    public Vehicule saveVehicule(Vehicule vehicule) {
+        return vehiculeRepository.save(vehicule);
     }
 }

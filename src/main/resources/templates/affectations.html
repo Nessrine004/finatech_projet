@@ -1,56 +1,118 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Liste des Affectations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-content {
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .table-container {
+            max-width: 95%;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #e9eef5;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            background-color: #0069d1;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn-secondary {
+            background-color: #cccccc;
+            color: #333;
+        }
+
+        .actions a, .actions form {
+            margin-right: 6px;
+            display: inline-block;
+        }
+
+        .text-center {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
+
 <div th:replace="fragments/nav-bar :: navbar"></div>
-<h2>Liste des Affectations</h2>
 
-<a th:href="@{/ajouter-affectation}">
-    <button>Nouvelle Affectation</button>
-</a>
+<div class="page-content">
+    <h2>Liste des Affectations</h2>
 
-<ul>
-    <li th:each="a : ${affectations}">
-        <!-- Véhicule -->
-        <div>
-            Véhicule :
-            <span th:if="${a.vehicule != null}"
-                  th:text="${a.vehicule.marque + ' ' + a.vehicule.modele}">
-            </span>
-            <span th:if="${a.vehicule == null}">[Véhicule inconnu]</span>
-            <br/>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Véhicule</th>
+                <th>Utilisateur</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${affectations}">
+                <td th:text="${a.vehicule != null ? a.vehicule.marque + ' ' + a.vehicule.modele + ' (' + a.vehicule.plaqueImmatriculation + ')' : '[Véhicule inconnu]'}">Véhicule</td>
+                <td th:text="${a.utilisateur != null ? a.utilisateur.nom + ' ' + a.utilisateur.prenom : '[Utilisateur inconnu]'}">Utilisateur</td>
+                <td th:text="${a.dateDebut}">Date de début</td>
+                <td th:text="${a.dateFin}">Date de fin</td>
+                <td class="actions">
+                    <form th:action="@{'/supprimer-affectation/' + ${a.id}}" method="post"
+                          onsubmit="return confirm('Confirmer la suppression ?')">
+                        <button type="submit" class="btn btn-secondary">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-            <!-- Utilisateur -->
-            Utilisateur :
-            <span th:if="${a.utilisateur != null}"
-                  th:text="${a.utilisateur.nom + ' ' + a.utilisateur.prenom}">
-            </span>
-            <span th:if="${a.utilisateur == null}">[Utilisateur inconnu]</span>
-            <br/>
-
-            <!-- Dates -->
-            Période : du <span th:text="${a.dateDebut}"></span>
-            au <span th:text="${a.dateFin}"></span>
-            <br/><br/>
-
-            <!-- Boutons actions -->
-            <a th:href="@{'/modifier-affectation/' + ${a.id}}">
-                <button>Modifier</button>
-            </a>
-
-            <form th:action="@{'/supprimer-affectation/' + ${a.id}}" method="post" style="display:inline;">
-                <button type="submit" onclick="return confirm('Confirmer la suppression ?')">Supprimer</button>
-            </form>
+        <div class="text-center">
+            <a th:href="@{/ajouter-affectation}" class="btn">Ajouter une affectation</a>
         </div>
-        <hr/>
-    </li>
-</ul>
-
-<a th:href="@{/vehicules}">Retour aux véhicules</a>
+    </div>
+</div>
 </body>
 </html>

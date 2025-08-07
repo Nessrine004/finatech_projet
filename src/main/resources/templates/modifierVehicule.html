@@ -55,7 +55,7 @@
 <h2>Modifier un véhicule</h2>
 
 <div class="form-container">
-    <form th:action="@{/modifier-vehicule}" method="post" th:object="${vehicule}">
+    <form th:action="@{/modifier-vehicule}" method="post" th:object="${vehicule}" enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}" />
 
         <label>Marque :</label>
@@ -68,12 +68,7 @@
         <input type="text" th:field="*{plaqueImmatriculation}" required />
 
         <label>Validité :</label>
-        <input type="date" th:field="*{validite}" required />
-
-        <label>Statut :</label>
-        <select th:field="*{statut}">
-            <option th:each="statut : ${statuts}" th:value="${statut}" th:text="${statut}"></option>
-        </select>
+        <input type="date" th:field="*{validite}" th:value="${validiteFormatted}" required />
 
         <label>Type de carburant :</label>
         <select th:field="*{typeCarburant}">
@@ -86,10 +81,14 @@
         </select>
 
         <label>Date début de location :</label>
-        <input type="date" th:field="*{dateDebutLocation}" />
+        <input type="date" th:field="*{dateDebutLocation}" th:value="${dateDebutFormatted}" />
 
         <label>Date fin de location :</label>
-        <input type="date" th:field="*{dateFinLocation}" />
+        <input type="date" th:field="*{dateFinLocation}" th:value="${dateFinFormatted}" />
+
+        <label for="carteGriseFile">Carte Grise :</label>
+        <input type="file" id="carteGriseFile" name="carteGriseFile" class="form-control" />
+
 
         <button type="submit">Mettre à jour</button>
     </form>

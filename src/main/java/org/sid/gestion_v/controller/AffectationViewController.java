@@ -13,7 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import org.sid.gestion_v.entities.StatutVehicule;
 
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,17 +38,20 @@ public class AffectationViewController {
     // Afficher formulaire ajout
     @GetMapping("/ajouter-affectation")
     public String showForm(Model model) {
-        List<Vehicule> vehiculesDisponibles = vehiculeService.getAllVehicules().stream()
-                .filter(v -> v.getStatut() == StatutVehicule.LIBRE)
-                .toList();
+        // On propose par défaut les véhicules disponibles aujourd’hui ➝ demain
+        LocalDate dateDebut = LocalDate.now();
+        LocalDate dateFin = dateDebut.plusDays(1);
+
+        List<Vehicule> vehiculesDisponibles = vehiculeService.getVehiculesDisponibles(dateDebut, dateFin);
 
         model.addAttribute("affectation", new Affectation());
         model.addAttribute("vehicules", vehiculesDisponibles);
         model.addAttribute("utilisateurs", utilisateurService.getAllUtilisateurs());
-        model.addAttribute("aucunVehiculeDispo", vehiculesDisponibles.isEmpty()); // ⚠️ nouvelle variable
+        model.addAttribute("aucunVehiculeDispo", vehiculesDisponibles.isEmpty());
 
         return "ajouterAffectation";
     }
+
 
 
     @PostMapping("/ajouter-affectation")
@@ -100,4 +108,39 @@ public class AffectationViewController {
         model.addAttribute("affectations", affectationService.getAllAffectations());
         return "affectations-readonly";
     }
+    @GetMapping("/vehicules-disponibles")
+    @ResponseBody
+    public List<Vehicule> getVehiculesDisponiblesAjax(@RequestParam String debut, @RequestParam String fin) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate dateDebut = LocalDate.parse(debut, formatter);
+            LocalDate dateFin = LocalDate.parse(fin, formatter);
+
+            return vehiculeService.getVehiculesDisponibles(dateDebut, dateFin);
+        } catch (Exception e) {
+            return List.of(); // retour vide si erreur de parsing ou autre
+        }
+    }
+    @GetMapping("/vehicules-disponibilite")
+    @ResponseBody
+    public List<Map<String, Object>> getVehiculesAvecDisponibilite(@RequestParam String debut,
+                                                                   @RequestParam String fin) {
+        LocalDate dateDebut = LocalDate.parse(debut);
+        LocalDate dateFin = LocalDate.parse(fin);
+
+        List<Vehicule> tousLesVehicules = vehiculeService.getAllVehicules();
+        List<Vehicule> dispo = vehiculeService.getVehiculesDisponibles(dateDebut, dateFin);
+
+        return tousLesVehicules.stream().map(v -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", v.getId());
+            map.put("marque", v.getMarque());
+            map.put("modele", v.getModele());
+            map.put("plaque", v.getPlaqueImmatriculation());
+            map.put("disponible", dispo.contains(v));
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+
 }

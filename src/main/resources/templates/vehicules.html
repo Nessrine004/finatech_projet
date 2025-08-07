@@ -109,11 +109,11 @@
                 <th>Modèle</th>
                 <th>Immatriculation</th>
                 <th>Validité</th>
-                <th>Statut</th>
                 <th>Type</th>
                 <th>Carburant</th>
                 <th>Début location</th>
                 <th>Fin location</th>
+                <th>Carte grise</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -123,11 +123,17 @@
                 <td th:text="${v.modele}">Modèle</td>
                 <td th:text="${v.plaqueImmatriculation}">0000-XX-00</td>
                 <td th:text="${v.validite}">2025-08-01</td>
-                <td th:text="${v.statut}">DISPONIBLE</td>
                 <td th:text="${v.typeVehicule}">SUV</td>
                 <td th:text="${v.typeCarburant}">Diesel</td>
                 <td th:text="${v.dateDebutLocation}">2024-01-01</td>
                 <td th:text="${v.dateFinLocation}">2024-12-31</td>
+                <td>
+                   <span th:if="${v.carteGrise != null}">
+                      <a th:href="@{'/vehicules/carte-grise/' + ${v.id}}" target="_blank" class="btn">Voir</a>
+                   </span>
+                    <span th:if="${v.carteGrise == null}">—</span>
+                </td>
+
                 <td class="actions">
                     <a th:href="@{'/modifier-vehicule/' + ${v.id}}" class="btn">Modifier</a>
                     <form th:action="@{'/supprimer-vehicule/' + ${v.id}}" method="post" style="display:inline;">

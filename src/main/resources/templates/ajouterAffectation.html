@@ -1,58 +1,158 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ajouter Affectation</title>
+    <title>Ajouter une Affectation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            background-color: #e9eef5;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+
+        .form-container label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .form-container input[type="date"],
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        .form-container button[type="submit"] {
+            background-color: #0092d1;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .form-container a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0099d1;
+            text-decoration: underline;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+
+    <script th:inline="javascript">
+        async function mettreAJourVehicules() {
+            const dateDebut = document.getElementById('dateDebut').value;
+            const dateFin = document.getElementById('dateFin').value;
+            const vehiculeSelect = document.getElementById('vehiculeSelect');
+
+            if (!dateDebut || !dateFin) return;
+
+            try {
+                const response = await fetch(`/vehicules-disponibilite?debut=${dateDebut}&fin=${dateFin}`);
+                const vehicules = await response.json();
+
+                vehiculeSelect.innerHTML = '<option value="">-- Choisir un véhicule --</option>';
+
+                vehicules.forEach(v => {
+                    const option = document.createElement("option");
+                    option.value = v.id;
+                    option.textContent = `${v.marque} ${v.modele} (${v.plaque})`;
+
+                    if (!v.disponible) {
+                        option.disabled = true;
+                        option.style.color = "gray";
+                    }
+
+                    vehiculeSelect.appendChild(option);
+                });
+
+            } catch (err) {
+                console.error("Erreur AJAX :", err);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('dateDebut').addEventListener("change", mettreAJourVehicules);
+            document.getElementById('dateFin').addEventListener("change", mettreAJourVehicules);
+        });
+    </script>
+
 </head>
 <body>
+
 <div th:replace="fragments/nav-bar :: navbar"></div>
+
 <h2>Ajouter une affectation</h2>
 
-<!-- ✅ Affichage du message d’erreur -->
-<div th:if="${errorMessage}" style="color: red; font-weight: bold; margin-bottom: 10px;">
-    <p th:text="${errorMessage}"></p>
+<div class="form-container">
+
+    <!-- 🔴 Affichage des erreurs -->
+    <div th:if="${errorMessage}" class="error-message">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <div th:if="${aucunVehiculeDispo}" class="error-message">
+        Aucun véhicule disponible actuellement pour l'affectation.
+    </div>
+
+    <form th:action="@{/ajouter-affectation}" th:object="${affectation}" method="post">
+
+        <label for="dateDebut">Date de début :</label>
+        <input type="date" th:field="*{dateDebut}" id="dateDebut" required />
+
+        <label for="dateFin">Date de fin :</label>
+        <input type="date" th:field="*{dateFin}" id="dateFin" required />
+
+        <label>Utilisateur :</label>
+        <select th:field="*{utilisateur.id}" required>
+            <option value="">-- Choisir un utilisateur --</option>
+            <option th:each="u : ${utilisateurs}" th:value="${u.id}" th:text="${u.nom + ' ' + u.prenom}"></option>
+        </select>
+
+        <label>Véhicule :</label>
+        <select th:field="*{vehicule.id}" id="vehiculeSelect" required>
+            <option value="">-- Choisir un véhicule --</option>
+            <option th:each="v : ${vehicules}"
+                    th:value="${v.id}"
+                    th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}">
+            </option>
+        </select>
+
+        <button type="submit" th:disabled="${aucunVehiculeDispo}">Ajouter</button>
+    </form>
+
+    <div style="text-align: center;">
+        <a th:href="@{/affectations}">⬅ Retour à la liste</a>
+    </div>
 </div>
-<div th:if="${aucunVehiculeDispo}" style="color: red; font-weight: bold; margin-bottom: 10px;">
-     Aucun véhicule disponible actuellement pour l'affectation.
-</div>
-
-
-<form th:action="@{/ajouter-affectation}" th:object="${affectation}" method="post">
-
-
-    <label>Date de début:</label>
-    <input type="date" th:field="*{dateDebut}" required/><br/><br/>
-
-    <label>Date de fin:</label>
-    <input type="date" th:field="*{dateFin}" required/><br/><br/>
-
-    <label>Utilisateur:</label>
-    <select th:field="*{utilisateur.id}" required>
-        <option value="">-- Choisir un utilisateur --</option>
-        <option th:each="u : ${utilisateurs}"
-                th:value="${u.id}"
-                th:text="${u.nom + ' ' + u.prenom}">
-        </option>
-    </select><br/><br/>
-
-    <label>Véhicule:</label>
-    <select th:field="*{vehicule.id}" required>
-        <option value="">-- Choisir un véhicule --</option>
-        <option th:each="v : ${vehicules}"
-                th:value="${v.id}"
-                th:text="${v.marque + ' ' + v.modele + ' (' + v.plaqueImmatriculation + ')'}">
-        </option>
-    </select><br/><br/>
-
-
-    <button type="submit" th:disabled="${aucunVehiculeDispo}">Ajouter</button>
-
-</form>
-
-<br/>
-<a href="/affectations">⬅ Retour à la liste</a>
 
 </body>
 </html>

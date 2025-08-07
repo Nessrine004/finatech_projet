@@ -55,7 +55,9 @@
 <h2>Ajouter un véhicule</h2>
 
 <div class="form-container">
-    <form th:action="@{/ajouter-vehicule}" method="post" th:object="${vehicule}">
+    <form th:action="@{/ajouter-vehicule}" method="post" enctype="multipart/form-data" th:object="${vehicule}">
+        <input type="hidden" th:field="*{id}" />
+
         <label>Marque :</label>
         <input type="text" th:field="*{marque}" required />
 
@@ -67,11 +69,6 @@
 
         <label>Validité :</label>
         <input type="date" th:field="*{validite}" required />
-
-        <label>Statut :</label>
-        <select th:field="*{statut}">
-            <option th:each="statut : ${statuts}" th:value="${statut}" th:text="${statut}"></option>
-        </select>
 
         <label>Type de carburant :</label>
         <select th:field="*{typeCarburant}">
@@ -89,7 +86,12 @@
         <label>Date fin de location :</label>
         <input type="date" th:field="*{dateFinLocation}" />
 
-        <button type="submit">Enregistrer</button>
+        <label for="carteGriseFile">Insérer la carte grise :</label>
+        <input type="file" id="carteGriseFile" name="carteGriseFile" class="form-control" />
+
+
+
+        <button type="submit">Ajouter</button>
     </form>
 
     <div style="text-align: center;">

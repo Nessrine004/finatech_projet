@@ -54,33 +54,4 @@ public class PanneServiceImpl implements PanneService {
         panneRepository.deleteById(id);
     }
 
-    @Scheduled(cron = "0 30 8 * * *")
-    public void mettreAJourStatutVehiculesPourMaintenance() {
-        LocalDate aujourdHui = LocalDate.now();
-        List<Panne> pannes = panneRepository.findByDatePrevue(aujourdHui);
-
-        for (Panne p : pannes) {
-            Vehicule v = p.getVehicule();
-            if (v != null && v.getStatut() != StatutVehicule.EN_MAINTENANCE) {
-                v.setStatut(StatutVehicule.EN_MAINTENANCE);
-                vehiculeRepository.save(v);
-                System.out.println("🔧 Véhicule " + v.getId() + " → EN_MAINTENANCE");
-            }
-        }
-    }
-
-    @Scheduled(cron = "0 0 9 * * *")
-    public void remettreVehiculesDisponibleApresIntervention() {
-        LocalDate aujourdHui = LocalDate.now();
-        List<Panne> pannes = panneRepository.findByDateEffectuee(aujourdHui);
-
-        for (Panne p : pannes) {
-            Vehicule v = p.getVehicule();
-            if (v != null && v.getStatut() == StatutVehicule.EN_MAINTENANCE) {
-                v.setStatut(StatutVehicule.LIBRE);
-                vehiculeRepository.save(v);
-                System.out.println("✅ Véhicule " + v.getId() + " → DISPONIBLE après intervention");
-            }
-        }
-    }
 }

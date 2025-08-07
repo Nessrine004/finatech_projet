@@ -6,6 +6,54 @@
     <meta charset="UTF-8">
     <title>Modifier Affectation</title>
 </head>
+<script>
+    async function mettreAJourVehiculesModification() {
+        const dateDebut = document.getElementById('dateDebut').value;
+        const dateFin = document.getElementById('dateFin').value;
+        const vehiculeSelect = document.getElementById('vehiculeSelect');
+        const vehiculeAffecteId = /*[[${affectation.vehicule.id}]]*/ 0; // Valeur Thymeleaf
+
+        if (!dateDebut || !dateFin) return;
+
+        try {
+            const response = await fetch(`/vehicules-disponibles?debut=${dateDebut}&fin=${dateFin}`);
+            const vehicules = await response.json();
+
+            // Sauvegarder la sélection actuelle
+            const ancienneSelection = vehiculeSelect.value;
+
+            vehiculeSelect.innerHTML = '<option value="">-- Choisir un véhicule --</option>';
+
+            // Toujours réafficher le véhicule déjà affecté (même s'il est affecté, pour modification autorisée)
+            if (vehiculeAffecteId) {
+                const optionSelected = document.createElement("option");
+                optionSelected.value = vehiculeAffecteId;
+                optionSelected.textContent = "[Véhicule actuel]";
+                optionSelected.selected = true;
+                vehiculeSelect.appendChild(optionSelected);
+            }
+
+            vehicules.forEach(v => {
+                // Ne pas dupliquer le véhicule déjà affecté
+                if (v.id != vehiculeAffecteId) {
+                    const option = document.createElement("option");
+                    option.value = v.id;
+                    option.textContent = `${v.marque} ${v.modele} (${v.plaqueImmatriculation})`;
+                    vehiculeSelect.appendChild(option);
+                }
+            });
+
+        } catch (error) {
+            console.error("Erreur lors du chargement des véhicules disponibles :", error);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById('dateDebut').addEventListener("change", mettreAJourVehiculesModification);
+        document.getElementById('dateFin').addEventListener("change", mettreAJourVehiculesModification);
+    });
+</script>
+
 <body>
 <div th:replace="fragments/nav-bar :: navbar"></div>
 <h2>Modifier Affectation</h2>
@@ -23,7 +71,7 @@
 
     <!-- Véhicule -->
     <label>Véhicule :</label>
-    <select th:field="*{vehicule.id}" required>
+    <select th:field="*{vehicule.id}" id="vehiculeSelect" required>
         <option value="">-- Choisir un véhicule --</option>
         <option th:each="v : ${vehicules}"
                 th:value="${v.id}"
@@ -47,11 +95,11 @@
 
     <!-- Dates -->
     <label>Date de début :</label>
-    <input type="date" th:field="*{dateDebut}" required />
+    <input type="date" th:field="*{dateDebut}" id="dateDebut" required />
     <br/><br/>
 
     <label>Date de fin :</label>
-    <input type="date" th:field="*{dateFin}" required />
+    <input type="date" th:field="*{dateFin}" id="dateFin" required />
     <br/><br/>
 
     <button type="submit">Modifier</button>

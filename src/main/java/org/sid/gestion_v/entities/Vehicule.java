@@ -28,14 +28,13 @@ public class Vehicule {
     private LocalDate validite;
 
     @Enumerated(EnumType.STRING)
-    private StatutVehicule statut;
+    private TypeCarburant typeCarburant;
 
-    private String typeCarburant;
+    @Enumerated(EnumType.STRING)
+    private TypeVehicule typeVehicule;
 
-    private String typeVehicule;
-
-    private String dateDebutLocation;
-    private String dateFinLocation;
+    private LocalDate dateDebutLocation;
+    private LocalDate dateFinLocation;
 
     @OneToMany(mappedBy = "vehicule")
     private List<Affectation> affectations;
@@ -48,4 +47,7 @@ public class Vehicule {
 
     @OneToMany(mappedBy = "vehicule")
     private List<Reservation> reservations;
+
+    @Lob
+    private byte[] carteGrise;
 }
